@@ -1,0 +1,219 @@
+# ============================================================
+# DROP THE MIKE — Build & Release Pipeline
+# Builds Windows installer (.exe) and macOS disk image (.dmg)
+# Triggered by pushing a version tag: git tag v1.0.0 && git push origin v1.0.0
+# ============================================================
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  # --------------------------------------------------------
+  # WINDOWS BUILD
+  # --------------------------------------------------------
+  build-windows:
+    name: Build Windows Installer
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller pillow
+          pip install -r requirements.txt
+
+      - name: Extract version from tag
+        id: version
+        shell: bash
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Convert PNG icon to ICO
+        shell: python
+        run: |
+          from PIL import Image
+          img = Image.open('android-chrome-512x512.png')
+          sizes = [(16,16), (32,32), (48,48), (64,64), (128,128), (256,256)]
+          img.save('icon.ico', format='ICO', sizes=sizes)
+          print('Created icon.ico with sizes:', sizes)
+
+      - name: Build with PyInstaller
+        shell: cmd
+        run: pyinstaller drop_the_mike.spec
+
+      - name: Download FFmpeg LGPL static build
+        shell: cmd
+        run: |
+          curl -L -o ffmpeg.zip https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-lgpl.zip
+          7z x ffmpeg.zip -offmpeg_temp
+          mkdir dist\DropTheMike\ffmpeg
+          copy ffmpeg_temp\ffmpeg-master-latest-win64-lgpl\bin\ffmpeg.exe dist\DropTheMike\ffmpeg\
+          copy ffmpeg_temp\ffmpeg-master-latest-win64-lgpl\bin\ffprobe.exe dist\DropTheMike\ffmpeg\
+
+      - name: Copy icon for Inno Setup
+        shell: cmd
+        run: copy icon.ico dist\DropTheMike\icon.ico
+
+      - name: Build Inno Setup installer
+        shell: cmd
+        run: |
+          iscc /DMyAppVersion=${{ steps.version.outputs.VERSION }} /DSourceDir=dist\DropTheMike installer.iss
+
+      - name: Upload Windows installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: Output/DropTheMike-Setup.exe
+
+  # --------------------------------------------------------
+  # macOS BUILD
+  # --------------------------------------------------------
+  build-macos:
+    name: Build macOS DMG
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller pillow
+          pip install -r requirements.txt
+
+      - name: Extract version from tag
+        id: version
+        shell: bash
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Convert PNG icon to ICNS
+        shell: python
+        run: |
+          from PIL import Image
+          import os, subprocess
+
+          img = Image.open('android-chrome-512x512.png').convert('RGBA')
+          iconset = 'icon.iconset'
+          os.makedirs(iconset, exist_ok=True)
+
+          sizes = [16, 32, 64, 128, 256, 512]
+          for s in sizes:
+              img.resize((s, s), Image.LANCZOS).save(f'{iconset}/icon_{s}x{s}.png')
+              # @2x variants
+              s2 = s * 2
+              if s2 <= 512:
+                  img.resize((s2, s2), Image.LANCZOS).save(f'{iconset}/icon_{s}x{s}@2x.png')
+          # 512@2x = 1024, but our source is 512 so just duplicate
+          img.save(f'{iconset}/icon_512x512@2x.png')
+
+          subprocess.run(['iconutil', '-c', 'icns', iconset], check=True)
+          print('Created icon.icns')
+
+      - name: Build with PyInstaller
+        run: pyinstaller drop_the_mike.spec
+
+      - name: Download FFmpeg static macOS build
+        run: |
+          # Download static FFmpeg for macOS (evermeet.cx provides macOS static builds)
+          curl -L -o ffmpeg.zip https://evermeet.cx/ffmpeg/getrelease/zip
+          curl -L -o ffprobe.zip https://evermeet.cx/ffmpeg/getrelease/ffprobe/zip
+          mkdir -p "dist/DropTheMike.app/Contents/MacOS/ffmpeg"
+          unzip -o ffmpeg.zip -d "dist/DropTheMike.app/Contents/MacOS/ffmpeg/"
+          unzip -o ffprobe.zip -d "dist/DropTheMike.app/Contents/MacOS/ffmpeg/"
+          chmod +x "dist/DropTheMike.app/Contents/MacOS/ffmpeg/ffmpeg"
+          chmod +x "dist/DropTheMike.app/Contents/MacOS/ffmpeg/ffprobe"
+
+      - name: Install create-dmg
+        run: brew install create-dmg
+
+      - name: Create DMG
+        run: |
+          create-dmg \
+            --volname "DROP THE MIKE" \
+            --volicon "icon.icns" \
+            --window-pos 200 120 \
+            --window-size 600 400 \
+            --icon-size 100 \
+            --icon "DropTheMike.app" 175 190 \
+            --hide-extension "DropTheMike.app" \
+            --app-drop-link 425 190 \
+            "DropTheMike.dmg" \
+            "dist/DropTheMike.app" \
+          || true
+          # create-dmg returns non-zero if dmg already exists; the || true handles re-runs
+          ls -la DropTheMike.dmg
+
+      - name: Upload macOS DMG artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-dmg
+          path: DropTheMike.dmg
+
+  # --------------------------------------------------------
+  # CREATE GITHUB RELEASE
+  # --------------------------------------------------------
+  release:
+    name: Create GitHub Release
+    needs: [build-windows, build-macos]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Windows installer
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-installer
+          path: artifacts/
+
+      - name: Download macOS DMG
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-dmg
+          path: artifacts/
+
+      - name: Extract version from tag
+        id: version
+        shell: bash
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: "DROP THE MIKE v${{ steps.version.outputs.VERSION }}"
+          body: |
+            ## DROP THE MIKE v${{ steps.version.outputs.VERSION }}
+
+            ### Downloads
+            - **Windows**: Download `DropTheMike-Setup.exe` and run the installer
+            - **macOS**: Download `DropTheMike.dmg`, open it, and drag the app to Applications
+
+            ### What's included
+            - DROP THE MIKE application
+            - FFmpeg (bundled — no separate installation needed)
+            - Desktop shortcut and Start Menu entry (Windows)
+          files: |
+            artifacts/DropTheMike-Setup.exe
+            artifacts/DropTheMike.dmg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

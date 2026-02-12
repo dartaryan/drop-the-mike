@@ -845,6 +845,124 @@
             .accordion-header { padding: 0.85rem 1rem; gap: 0.5rem; }
             .accordion-header-icon { width: 30px; height: 30px; font-size: 0.95rem; }
         }
+
+        /* ===== Download Section ===== */
+        .download-section {
+            text-align: center;
+            padding: 2rem 1.5rem 1.5rem;
+        }
+        .download-section h3 {
+            font-size: 1.3rem;
+            color: var(--foreground);
+            margin-bottom: 0.5rem;
+        }
+        .download-section .download-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+        .download-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.25rem;
+        }
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .download-btn i {
+            font-size: 1.3rem;
+        }
+        .download-btn-windows {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff;
+            border-color: #059669;
+        }
+        .download-btn-windows:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+            border-color: #6ee7b7;
+        }
+        .download-btn-mac {
+            background: linear-gradient(135deg, #1f2937, #111827);
+            color: #fff;
+            border-color: #374151;
+        }
+        .download-btn-mac:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            border-color: #6b7280;
+        }
+        .download-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+        .download-meta span {
+            margin: 0 0.5rem;
+        }
+        .manual-install-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            background: none;
+            border: none;
+            font-family: var(--font-body);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        .manual-install-toggle:hover {
+            color: var(--primary);
+            background: var(--surface);
+        }
+        .manual-install-toggle i {
+            transition: transform 0.3s ease;
+            font-size: 0.9rem;
+        }
+        .manual-install-toggle.active i {
+            transform: rotate(180deg);
+        }
+        .manual-install-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .manual-install-content.active {
+            max-height: 5000px;
+        }
+        .manual-install-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .manual-install-divider::before,
+        .manual-install-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        @media (max-width: 480px) {
+            .download-btn { padding: 12px 20px; font-size: 0.95rem; }
+        }
     </style>
 </head>
 <body>
@@ -924,119 +1042,185 @@
                 </div>
                 <div class="accordion-content">
                     <div class="accordion-body">
-                        <div class="lang-he">
-                            <p>לא צריך ניסיון טכני! עקבו אחרי השלבים הבאים:</p>
 
-                            <div class="step-card">
-                                <h4><span class="step-number">1</span>התקנת Python</h4>
-                                <p>Python היא תוכנה חינמית שהמחשב צריך כדי להריץ את הכלי. התקנה פשוטה:</p>
-                                <ul>
-                                    <li>פתחו את <strong>Microsoft Store</strong> (לחצו על כפתור Start וחפשו "Microsoft Store")</li>
-                                    <li>חפשו <strong>"Python 3.11"</strong></li>
-                                    <li>לחצו על <strong>"Get"</strong> (קבל) — זה חינמי</li>
-                                    <li>חכו שההתקנה תסתיים</li>
-                                </ul>
-                                <div class="callout callout-tip">
-                                    <span class="callout-icon"><i class="ti ti-bulb"></i></span>
-                                    <p>אם כבר יש לכם Python 3.10 ומעלה, אפשר לדלג על שלב זה.</p>
+                        <!-- ===== DOWNLOAD SECTION (both languages) ===== -->
+                        <div class="download-section">
+                            <h3>
+                                <span class="lang-he-inline">הורידו והתקינו בלחיצה אחת</span>
+                                <span class="lang-en-inline">Download &amp; install with one click</span>
+                            </h3>
+                            <p class="download-subtitle">
+                                <span class="lang-he-inline">כולל הכל — לא צריך להתקין שום דבר נוסף</span>
+                                <span class="lang-en-inline">Everything included — no additional installations needed</span>
+                            </p>
+                            <div class="download-buttons">
+                                <a id="download-btn-win"
+                                   href="https://github.com/dartaryan/drop-the-mike/releases/latest/download/DropTheMike-Setup.exe"
+                                   class="download-btn download-btn-windows">
+                                    <i class="ti ti-brand-windows"></i>
+                                    <span>
+                                        <span class="lang-he-inline">הורדה ל-Windows</span>
+                                        <span class="lang-en-inline">Download for Windows</span>
+                                    </span>
+                                </a>
+                                <a id="download-btn-mac"
+                                   href="https://github.com/dartaryan/drop-the-mike/releases/latest/download/DropTheMike.dmg"
+                                   class="download-btn download-btn-mac">
+                                    <i class="ti ti-brand-apple"></i>
+                                    <span>
+                                        <span class="lang-he-inline">הורדה ל-Mac</span>
+                                        <span class="lang-en-inline">Download for Mac</span>
+                                    </span>
+                                </a>
+                            </div>
+                            <p class="download-meta" id="download-meta">
+                                <span id="download-version"></span>
+                                <span id="download-count"></span>
+                            </p>
+
+                            <div class="lang-he">
+                                <div class="step-card" style="text-align:right;">
+                                    <h4><i class="ti ti-info-circle" style="color:var(--primary);margin-left:6px;"></i>אחרי ההורדה</h4>
+                                    <p>הריצו את קובץ ההתקנה שהורדתם. ההתקנה תיצור קיצור דרך בשולחן העבודה ובתפריט ההתחלה.</p>
+                                    <div class="callout callout-warning">
+                                        <span class="callout-icon"><i class="ti ti-alert-triangle"></i></span>
+                                        <p><strong>שימו לב:</strong> אם Windows שואל "Windows protected your PC" — לחצו על "More info" ואז "Run anyway". זו התראה רגילה עבור תוכנות שהורדתם מהאינטרנט.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lang-en">
+                                <div class="step-card">
+                                    <h4><i class="ti ti-info-circle" style="color:var(--primary);margin-right:6px;"></i>After downloading</h4>
+                                    <p>Run the installer you downloaded. It will create a desktop shortcut and Start Menu entry.</p>
+                                    <div class="callout callout-warning">
+                                        <span class="callout-icon"><i class="ti ti-alert-triangle"></i></span>
+                                        <p><strong>Note:</strong> If Windows shows "Windows protected your PC" — click "More info" then "Run anyway". This is a normal warning for software downloaded from the internet.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===== MANUAL INSTALL TOGGLE ===== -->
+                        <div style="text-align:center;">
+                            <div class="manual-install-divider">
+                                <span class="lang-he-inline">או התקנה ידנית</span>
+                                <span class="lang-en-inline">or manual installation</span>
+                            </div>
+                            <button class="manual-install-toggle" onclick="toggleManualInstall(this)">
+                                <span class="lang-he-inline">הצג הוראות התקנה ידנית</span>
+                                <span class="lang-en-inline">Show manual installation steps</span>
+                                <i class="ti ti-chevron-down"></i>
+                            </button>
+                        </div>
+
+                        <div class="manual-install-content" id="manual-install">
+                            <div class="lang-he">
+                                <p style="margin-top:1rem;">לא צריך ניסיון טכני! עקבו אחרי השלבים הבאים:</p>
+
+                                <div class="step-card">
+                                    <h4><span class="step-number">1</span>התקנת Python</h4>
+                                    <p>Python היא תוכנה חינמית שהמחשב צריך כדי להריץ את הכלי. התקנה פשוטה:</p>
+                                    <ul>
+                                        <li>פתחו את <strong>Microsoft Store</strong> (לחצו על כפתור Start וחפשו "Microsoft Store")</li>
+                                        <li>חפשו <strong>"Python 3.11"</strong></li>
+                                        <li>לחצו על <strong>"Get"</strong> (קבל) — זה חינמי</li>
+                                        <li>חכו שההתקנה תסתיים</li>
+                                    </ul>
+                                    <div class="callout callout-tip">
+                                        <span class="callout-icon"><i class="ti ti-bulb"></i></span>
+                                        <p>אם כבר יש לכם Python 3.10 ומעלה, אפשר לדלג על שלב זה.</p>
+                                    </div>
+                                </div>
+
+                                <div class="step-card">
+                                    <h4><span class="step-number">2</span>התקנת FFmpeg</h4>
+                                    <p>FFmpeg היא תוכנה חינמית שמאפשרת לעבד קבצי אודיו ווידאו. הדרך הכי קלה:</p>
+                                    <ul>
+                                        <li>לחצו על מקש <strong>Windows</strong> במקלדת</li>
+                                        <li>הקלידו <strong>cmd</strong> ולחצו Enter</li>
+                                        <li>בחלון השחור שנפתח, הקלידו את הפקודה הבאה ולחצו Enter:</li>
+                                    </ul>
+                                    <div class="code-block">
+                                        <code><span class="command">winget install Gyan.FFmpeg</span></code>
+                                    </div>
+                                    <div class="callout callout-tip">
+                                        <span class="callout-icon"><i class="ti ti-bulb"></i></span>
+                                        <p>אם הפקודה לא עובדת, אפשר להוריד FFmpeg ידנית מ-<a href="https://www.gyan.dev/ffmpeg/builds/" target="_blank">gyan.dev</a>, לחלץ את הקבצים ולשים את <code>ffmpeg.exe</code> באותה תיקייה עם התוכנה.</p>
+                                    </div>
+                                </div>
+
+                                <div class="step-card">
+                                    <h4><span class="step-number">3</span>הורדת DROP THE MIKE</h4>
+                                    <p>הורידו את הכלי מ-GitHub:</p>
+                                    <ul>
+                                        <li>היכנסו לדף: <a href="https://github.com/dartaryan/drop-the-mike" target="_blank">github.com/dartaryan/drop-the-mike</a></li>
+                                        <li>לחצו על הכפתור הירוק <strong>"&lt;&gt; Code"</strong></li>
+                                        <li>בחרו <strong>"Download ZIP"</strong></li>
+                                        <li>חלצו את הקובץ לתיקייה במחשב (למשל: שולחן העבודה)</li>
+                                    </ul>
+                                </div>
+
+                                <div class="step-card">
+                                    <h4><span class="step-number">4</span>הפעלת התוכנה</h4>
+                                    <p>פתחו את התיקייה שחילצתם ולחצו פעמיים על <strong>drop_the_mike.bat</strong></p>
+                                    <p>בהפעלה הראשונה, התוכנה תתקין אוטומטית את כל מה שהיא צריכה. פשוט חכו שהחלון ייפתח.</p>
                                 </div>
                             </div>
 
-                            <div class="step-card">
-                                <h4><span class="step-number">2</span>התקנת FFmpeg</h4>
-                                <p>FFmpeg היא תוכנה חינמית שמאפשרת לעבד קבצי אודיו ווידאו. הדרך הכי קלה:</p>
-                                <ul>
-                                    <li>לחצו על מקש <strong>Windows</strong> במקלדת</li>
-                                    <li>הקלידו <strong>cmd</strong> ולחצו Enter</li>
-                                    <li>בחלון השחור שנפתח, הקלידו את הפקודה הבאה ולחצו Enter:</li>
-                                </ul>
-                                <div class="code-block">
-                                    <code><span class="command">winget install Gyan.FFmpeg</span></code>
-                                </div>
-                                <div class="callout callout-tip">
-                                    <span class="callout-icon"><i class="ti ti-bulb"></i></span>
-                                    <p>אם הפקודה לא עובדת, אפשר להוריד FFmpeg ידנית מ-<a href="https://www.gyan.dev/ffmpeg/builds/" target="_blank">gyan.dev</a>, לחלץ את הקבצים ולשים את <code>ffmpeg.exe</code> באותה תיקייה עם התוכנה.</p>
-                                </div>
-                            </div>
+                            <div class="lang-en">
+                                <p style="margin-top:1rem;">No technical experience needed! Follow these simple steps:</p>
 
-                            <div class="step-card">
-                                <h4><span class="step-number">3</span>הורדת DROP THE MIKE</h4>
-                                <p>הורידו את הכלי מ-GitHub:</p>
-                                <ul>
-                                    <li>היכנסו לדף: <a href="https://github.com/dartaryan/drop-the-mike" target="_blank">github.com/dartaryan/drop-the-mike</a></li>
-                                    <li>לחצו על הכפתור הירוק <strong>"&lt;&gt; Code"</strong></li>
-                                    <li>בחרו <strong>"Download ZIP"</strong></li>
-                                    <li>חלצו את הקובץ לתיקייה במחשב (למשל: שולחן העבודה)</li>
-                                </ul>
-                            </div>
+                                <div class="step-card">
+                                    <h4><span class="step-number">1</span>Install Python</h4>
+                                    <p>Python is a free program your computer needs to run this tool:</p>
+                                    <ul>
+                                        <li>Open the <strong>Microsoft Store</strong> (click Start and search for "Microsoft Store")</li>
+                                        <li>Search for <strong>"Python 3.11"</strong></li>
+                                        <li>Click <strong>"Get"</strong> — it's free</li>
+                                        <li>Wait for the installation to finish</li>
+                                    </ul>
+                                    <div class="callout callout-tip">
+                                        <span class="callout-icon"><i class="ti ti-bulb"></i></span>
+                                        <p>If you already have Python 3.10 or newer, you can skip this step.</p>
+                                    </div>
+                                </div>
 
-                            <div class="step-card">
-                                <h4><span class="step-number">4</span>הפעלת התוכנה</h4>
-                                <p>פתחו את התיקייה שחילצתם ולחצו פעמיים על <strong>drop_the_mike.bat</strong></p>
-                                <p>בהפעלה הראשונה, התוכנה תתקין אוטומטית את כל מה שהיא צריכה. פשוט חכו שהחלון ייפתח.</p>
-                                <div class="callout callout-warning">
-                                    <span class="callout-icon"><i class="ti ti-alert-triangle"></i></span>
-                                    <p><strong>שימו לב:</strong> אם Windows שואל "Windows protected your PC" — לחצו על "More info" ואז "Run anyway". זו התראה רגילה עבור תוכנות שהורדתם מהאינטרנט.</p>
+                                <div class="step-card">
+                                    <h4><span class="step-number">2</span>Install FFmpeg</h4>
+                                    <p>FFmpeg is free software for processing audio and video files. The easiest way:</p>
+                                    <ul>
+                                        <li>Press the <strong>Windows</strong> key on your keyboard</li>
+                                        <li>Type <strong>cmd</strong> and press Enter</li>
+                                        <li>In the black window, type the following command and press Enter:</li>
+                                    </ul>
+                                    <div class="code-block">
+                                        <code><span class="command">winget install Gyan.FFmpeg</span></code>
+                                    </div>
+                                    <div class="callout callout-tip">
+                                        <span class="callout-icon"><i class="ti ti-bulb"></i></span>
+                                        <p>If the command doesn't work, you can download FFmpeg manually from <a href="https://www.gyan.dev/ffmpeg/builds/" target="_blank">gyan.dev</a>, extract the files, and place <code>ffmpeg.exe</code> in the same folder as the program.</p>
+                                    </div>
+                                </div>
+
+                                <div class="step-card">
+                                    <h4><span class="step-number">3</span>Download DROP THE MIKE</h4>
+                                    <p>Download the tool from GitHub:</p>
+                                    <ul>
+                                        <li>Go to: <a href="https://github.com/dartaryan/drop-the-mike" target="_blank">github.com/dartaryan/drop-the-mike</a></li>
+                                        <li>Click the green <strong>"&lt;&gt; Code"</strong> button</li>
+                                        <li>Select <strong>"Download ZIP"</strong></li>
+                                        <li>Extract the ZIP file to a folder on your computer (e.g., Desktop)</li>
+                                    </ul>
+                                </div>
+
+                                <div class="step-card">
+                                    <h4><span class="step-number">4</span>Run the Program</h4>
+                                    <p>Open the extracted folder and double-click <strong>drop_the_mike.bat</strong></p>
+                                    <p>On first run, the program will automatically install everything it needs. Just wait for the window to open.</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="lang-en">
-                            <p>No technical experience needed! Follow these simple steps:</p>
-
-                            <div class="step-card">
-                                <h4><span class="step-number">1</span>Install Python</h4>
-                                <p>Python is a free program your computer needs to run this tool:</p>
-                                <ul>
-                                    <li>Open the <strong>Microsoft Store</strong> (click Start and search for "Microsoft Store")</li>
-                                    <li>Search for <strong>"Python 3.11"</strong></li>
-                                    <li>Click <strong>"Get"</strong> — it's free</li>
-                                    <li>Wait for the installation to finish</li>
-                                </ul>
-                                <div class="callout callout-tip">
-                                    <span class="callout-icon"><i class="ti ti-bulb"></i></span>
-                                    <p>If you already have Python 3.10 or newer, you can skip this step.</p>
-                                </div>
-                            </div>
-
-                            <div class="step-card">
-                                <h4><span class="step-number">2</span>Install FFmpeg</h4>
-                                <p>FFmpeg is free software for processing audio and video files. The easiest way:</p>
-                                <ul>
-                                    <li>Press the <strong>Windows</strong> key on your keyboard</li>
-                                    <li>Type <strong>cmd</strong> and press Enter</li>
-                                    <li>In the black window, type the following command and press Enter:</li>
-                                </ul>
-                                <div class="code-block">
-                                    <code><span class="command">winget install Gyan.FFmpeg</span></code>
-                                </div>
-                                <div class="callout callout-tip">
-                                    <span class="callout-icon"><i class="ti ti-bulb"></i></span>
-                                    <p>If the command doesn't work, you can download FFmpeg manually from <a href="https://www.gyan.dev/ffmpeg/builds/" target="_blank">gyan.dev</a>, extract the files, and place <code>ffmpeg.exe</code> in the same folder as the program.</p>
-                                </div>
-                            </div>
-
-                            <div class="step-card">
-                                <h4><span class="step-number">3</span>Download DROP THE MIKE</h4>
-                                <p>Download the tool from GitHub:</p>
-                                <ul>
-                                    <li>Go to: <a href="https://github.com/dartaryan/drop-the-mike" target="_blank">github.com/dartaryan/drop-the-mike</a></li>
-                                    <li>Click the green <strong>"&lt;&gt; Code"</strong> button</li>
-                                    <li>Select <strong>"Download ZIP"</strong></li>
-                                    <li>Extract the ZIP file to a folder on your computer (e.g., Desktop)</li>
-                                </ul>
-                            </div>
-
-                            <div class="step-card">
-                                <h4><span class="step-number">4</span>Run the Program</h4>
-                                <p>Open the extracted folder and double-click <strong>drop_the_mike.bat</strong></p>
-                                <p>On first run, the program will automatically install everything it needs. Just wait for the window to open.</p>
-                                <div class="callout callout-warning">
-                                    <span class="callout-icon"><i class="ti ti-alert-triangle"></i></span>
-                                    <p><strong>Note:</strong> If Windows shows "Windows protected your PC" — click "More info" then "Run anyway". This is a normal warning for software downloaded from the internet.</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1471,6 +1655,35 @@
             localStorage.setItem('lang', html.getAttribute('lang'));
             localStorage.setItem('dir', html.getAttribute('dir'));
         }
+
+        // Manual install toggle
+        function toggleManualInstall(btn) {
+            var content = document.getElementById('manual-install');
+            btn.classList.toggle('active');
+            content.classList.toggle('active');
+        }
+
+        // Fetch latest release info from GitHub API (version + download count)
+        (function() {
+            var OWNER = 'dartaryan';
+            var REPO = 'drop-the-mike';
+            try {
+                fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/releases/latest')
+                    .then(function(r) { return r.json(); })
+                    .then(function(release) {
+                        if (!release || !release.tag_name) return;
+                        var versionEl = document.getElementById('download-version');
+                        var countEl = document.getElementById('download-count');
+                        if (versionEl) versionEl.textContent = release.tag_name;
+                        if (countEl) {
+                            var total = 0;
+                            (release.assets || []).forEach(function(a) { total += a.download_count; });
+                            if (total > 0) countEl.textContent = total.toLocaleString() + ' downloads';
+                        }
+                    })
+                    .catch(function() {});
+            } catch(e) {}
+        })();
 
         // Restore preferences
         (function() {

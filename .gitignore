@@ -7,6 +7,14 @@ dist/
 build/
 *.egg
 
+# Build artifacts (PyInstaller / Inno Setup)
+Output/
+icon.ico
+icon.icns
+icon.iconset/
+*.dmg
+ffmpeg_temp/
+
 # FFmpeg binaries (users must provide their own)
 ffmpeg.exe
 ffprobe.exe

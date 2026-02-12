@@ -13,12 +13,16 @@ import json
 import threading
 import webbrowser
 import shutil
+import urllib.request
 from typing import Optional, List, Callable
 
 
 # ============================================================================
 # CONSTANTS
 # ============================================================================
+APP_VERSION = "1.0.0"
+GITHUB_OWNER = "dartaryan"
+GITHUB_REPO = "drop-the-mike"
 MIKE_AGENT_URL = "https://gemini.google.com/gem/124_L6lakUi2fZtfW7ETr38BB-RY2y3t8?usp=sharing"
 GITHUB_URL = "https://github.com/dartaryan"
 
@@ -144,6 +148,14 @@ STRINGS = {
     # Footer
     "made_with": {"en": "Made with", "he": "נוצר עם"},
     "by": {"en": "by Ben Akiva", "he": "על ידי Ben Akiva"},
+
+    # Auto-update
+    "update_available": {
+        "en": "New version {version} is available!",
+        "he": "!{version} גרסה חדשה זמינה"
+    },
+    "update_download": {"en": "Download Update", "he": "הורד עדכון"},
+    "update_dismiss": {"en": "Dismiss", "he": "סגור"},
 }
 
 
@@ -217,34 +229,74 @@ def get_script_dir() -> str:
         return os.path.dirname(os.path.abspath(__file__))
 
 
-def get_ffmpeg_path() -> str:
-    """Get FFmpeg path - checks multiple locations"""
+def _get_binary_path(name: str) -> str:
+    """Get path to a bundled binary (ffmpeg or ffprobe), cross-platform."""
+    exe = f'{name}.exe' if sys.platform == 'win32' else name
     script_dir = get_script_dir()
     locations = [
-        os.path.join(script_dir, 'ffmpeg.exe'),
-        os.path.join(script_dir, 'ffmpeg', 'ffmpeg.exe'),
-        os.path.join(getattr(sys, '_MEIPASS', ''), 'ffmpeg', 'ffmpeg.exe') if hasattr(sys, '_MEIPASS') else '',
-        'ffmpeg'
+        os.path.join(script_dir, exe),
+        os.path.join(script_dir, 'ffmpeg', exe),
     ]
+    if hasattr(sys, '_MEIPASS'):
+        locations.append(os.path.join(sys._MEIPASS, 'ffmpeg', exe))
+    # Fallback: rely on system PATH
+    locations.append(name)
     for path in locations:
-        if path and (os.path.exists(path) or path == 'ffmpeg'):
+        if path and (os.path.exists(path) or path == name):
             return path
-    return 'ffmpeg'
+    return name
+
+
+def get_ffmpeg_path() -> str:
+    """Get FFmpeg path - checks multiple locations (cross-platform)"""
+    return _get_binary_path('ffmpeg')
 
 
 def get_ffprobe_path() -> str:
-    """Get FFprobe path - checks multiple locations"""
-    script_dir = get_script_dir()
-    locations = [
-        os.path.join(script_dir, 'ffprobe.exe'),
-        os.path.join(script_dir, 'ffmpeg', 'ffprobe.exe'),
-        os.path.join(getattr(sys, '_MEIPASS', ''), 'ffmpeg', 'ffprobe.exe') if hasattr(sys, '_MEIPASS') else '',
-        'ffprobe'
-    ]
-    for path in locations:
-        if path and (os.path.exists(path) or path == 'ffprobe'):
-            return path
-    return 'ffprobe'
+    """Get FFprobe path - checks multiple locations (cross-platform)"""
+    return _get_binary_path('ffprobe')
+
+
+# ============================================================================
+# AUTO-UPDATE CHECKER
+# ============================================================================
+def check_for_update() -> Optional[dict]:
+    """Check GitHub Releases for a newer version. Returns update info or None."""
+    try:
+        url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/releases/latest"
+        req = urllib.request.Request(url, headers={"Accept": "application/vnd.github+json"})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read().decode())
+        latest_tag = data.get("tag_name", "").lstrip("v")
+        if not latest_tag:
+            return None
+        # Simple version comparison (works for semver like 1.0.0 < 1.1.0)
+        current_parts = [int(x) for x in APP_VERSION.split(".")]
+        latest_parts = [int(x) for x in latest_tag.split(".")]
+        if latest_parts > current_parts:
+            # Find the right download asset for this platform
+            assets = data.get("assets", [])
+            if sys.platform == "win32":
+                pattern = ".exe"
+            elif sys.platform == "darwin":
+                pattern = ".dmg"
+            else:
+                pattern = ""
+            download_url = ""
+            for asset in assets:
+                if pattern and asset["name"].endswith(pattern):
+                    download_url = asset["browser_download_url"]
+                    break
+            if not download_url:
+                download_url = data.get("html_url", "")
+            return {
+                "version": latest_tag,
+                "download_url": download_url,
+                "release_url": data.get("html_url", ""),
+            }
+    except Exception:
+        pass
+    return None
 
 
 def is_video_file(file_path: str) -> bool:
@@ -468,6 +520,10 @@ class DropTheMikeApp(ctk.CTk):
         # Center window
         self._center_window()
 
+        # Check for updates in background
+        self._update_bar = None
+        threading.Thread(target=self._check_update_background, daemon=True).start()
+
     def _center_window(self):
         """Center window on screen"""
         self.update_idletasks()
@@ -476,6 +532,57 @@ class DropTheMikeApp(ctk.CTk):
         x = (self.winfo_screenwidth() // 2) - (width // 2)
         y = (self.winfo_screenheight() // 2) - (height // 2)
         self.geometry(f'{width}x{height}+{x}+{y}')
+
+    # ------------------------------------------------------------------
+    # AUTO-UPDATE
+    # ------------------------------------------------------------------
+    def _check_update_background(self):
+        """Run update check in background thread, then schedule UI update."""
+        result = check_for_update()
+        if result:
+            self.after(0, lambda: self._show_update_bar(result))
+
+    def _show_update_bar(self, info: dict):
+        """Show a non-intrusive update notification bar at the top of the window."""
+        if self._update_bar is not None:
+            return
+        bar = ctk.CTkFrame(self, fg_color="#065f46", corner_radius=0, height=40)
+        bar.pack(fill="x", side="top", before=self.scroll_frame)
+        bar.pack_propagate(False)
+
+        inner = ctk.CTkFrame(bar, fg_color="transparent")
+        inner.pack(expand=True)
+
+        msg = t("update_available", self.lang, version=info["version"])
+        label = ctk.CTkLabel(inner, text=msg, text_color="#a7f3d0",
+                             font=(Fonts.FAMILY_SANS, 12, "bold"))
+        label.pack(side="left", padx=(10, 8))
+
+        dl_btn = ctk.CTkButton(
+            inner, text=t("update_download", self.lang),
+            fg_color="#10b981", hover_color="#059669", text_color="#ffffff",
+            font=(Fonts.FAMILY_SANS, 11, "bold"), width=120, height=26,
+            corner_radius=13,
+            command=lambda: webbrowser.open(info["download_url"])
+        )
+        dl_btn.pack(side="left", padx=4)
+
+        dismiss_btn = ctk.CTkButton(
+            inner, text=t("update_dismiss", self.lang),
+            fg_color="transparent", hover_color="#047857", text_color="#6ee7b7",
+            font=(Fonts.FAMILY_SANS, 11), width=60, height=26,
+            corner_radius=13,
+            command=lambda: self._dismiss_update_bar()
+        )
+        dismiss_btn.pack(side="left", padx=4)
+
+        self._update_bar = bar
+
+    def _dismiss_update_bar(self):
+        """Hide the update notification bar."""
+        if self._update_bar:
+            self._update_bar.destroy()
+            self._update_bar = None
 
     def _register_i18n(self, widget, key: str, config_key: str = "text"):
         """Register a widget for language updates"""

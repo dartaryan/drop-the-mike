@@ -6,7 +6,24 @@ DROP THE MIKE is a desktop tool that splits long audio and video files into smal
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)
+![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS-lightgrey)
+[![Latest Release](https://img.shields.io/github/v/release/dartaryan/drop-the-mike?label=Download)](https://github.com/dartaryan/drop-the-mike/releases/latest)
+[![Total Downloads](https://img.shields.io/github/downloads/dartaryan/drop-the-mike/total)](https://github.com/dartaryan/drop-the-mike/releases)
+
+---
+
+## Download & Install (Recommended)
+
+**No technical knowledge required.** Everything is bundled — just download and run:
+
+| Platform | Download |
+|----------|----------|
+| **Windows** | [**DropTheMike-Setup.exe**](https://github.com/dartaryan/drop-the-mike/releases/latest/download/DropTheMike-Setup.exe) |
+| **macOS** | [**DropTheMike.dmg**](https://github.com/dartaryan/drop-the-mike/releases/latest/download/DropTheMike.dmg) |
+
+The installer includes everything (Python runtime, FFmpeg, all dependencies). No separate installations needed.
+
+> **Windows note:** If you see "Windows protected your PC" — click "More info" then "Run anyway". This is normal for unsigned software.
 
 ---
 
@@ -19,60 +36,12 @@ DROP THE MIKE is a desktop tool that splits long audio and video files into smal
 - **Quality Options** — Keep original quality or compress to save space.
 - **Bilingual UI** — Switch between Hebrew and English with one click.
 - **Mike Agent Integration** — Built-in link to the Mike AI agent for transcript analysis.
+- **Auto-Update** — The app checks for new versions automatically and notifies you.
 - **Modern Green Theme** — Clean, modern design inspired by the [Hebrew Markdown Export](https://dartaryan.github.io/hebrew-markdown-export/) tool.
 
 ---
 
-## Prerequisites
-
-1. **Python 3.10+** — Install from [Microsoft Store](https://apps.microsoft.com/detail/9PJPW5LDXLZ5) or [python.org](https://www.python.org/downloads/)
-2. **FFmpeg** — Required for audio/video processing.
-
-### Installing FFmpeg
-
-**Option A — Download manually:**
-1. Download from [ffmpeg.org](https://ffmpeg.org/download.html) or [gyan.dev](https://www.gyan.dev/ffmpeg/builds/)
-2. Extract `ffmpeg.exe` and `ffprobe.exe`
-3. Place them in the same folder as `drop_the_mike.py`
-
-**Option B — Install via package manager:**
-```bash
-# Windows (winget)
-winget install Gyan.FFmpeg
-
-# Windows (chocolatey)
-choco install ffmpeg
-
-# Windows (scoop)
-scoop install ffmpeg
-```
-
----
-
-## Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/dartaryan/drop-the-mike.git
-cd drop-the-mike
-
-# Install Python dependencies
-pip install -r requirements.txt
-```
-
----
-
 ## Usage
-
-### Quick Start (Windows)
-
-Double-click **`drop_the_mike.bat`** — it will install dependencies automatically on first run.
-
-### Manual Start
-
-```bash
-python drop_the_mike.py
-```
 
 ### Workflow
 
@@ -95,17 +64,81 @@ Mike is an AI transcript intelligence agent that turns raw conversation transcri
 
 ---
 
+## Manual Installation (Advanced)
+
+If you prefer to run from source instead of using the installer:
+
+### Prerequisites
+
+1. **Python 3.10+** — Install from [Microsoft Store](https://apps.microsoft.com/detail/9PJPW5LDXLZ5) or [python.org](https://www.python.org/downloads/)
+2. **FFmpeg** — Install via `winget install Gyan.FFmpeg` or download from [gyan.dev](https://www.gyan.dev/ffmpeg/builds/)
+
+### Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/dartaryan/drop-the-mike.git
+cd drop-the-mike
+
+# Install Python dependencies
+pip install -r requirements.txt
+```
+
+### Run
+
+**Windows:** Double-click `drop_the_mike.bat`
+
+**Manual:** `python drop_the_mike.py`
+
+---
+
 ## Project Structure
 
 ```
 drop-the-mike/
-├── drop_the_mike.py      # Main application
-├── drop_the_mike.bat     # Windows launcher
-├── requirements.txt      # Python dependencies
-├── mike-agent.md         # Mike agent documentation
+├── drop_the_mike.py        # Main application
+├── drop_the_mike.bat       # Windows launcher (for manual install)
+├── drop_the_mike.spec      # PyInstaller build spec
+├── installer.iss           # Inno Setup installer script (Windows)
+├── requirements.txt        # Python dependencies
+├── mike-agent.md           # Mike agent documentation
+├── index.html              # Website / instructions page
+├── android-chrome-512x512.png  # App icon source
+├── .github/workflows/      # CI/CD pipeline
+│   └── build-and-release.yml
 ├── .gitignore
 └── README.md
 ```
+
+---
+
+## Building from Source
+
+To build the installers yourself:
+
+```bash
+# Install build tools
+pip install pyinstaller pillow
+
+# Build with PyInstaller
+pyinstaller drop_the_mike.spec
+
+# (Windows) Build installer with Inno Setup
+iscc installer.iss
+```
+
+---
+
+## Releasing a New Version
+
+1. Update `APP_VERSION` in `drop_the_mike.py`
+2. Commit and push changes
+3. Create and push a version tag:
+   ```bash
+   git tag v1.1.0
+   git push origin main --tags
+   ```
+4. GitHub Actions automatically builds Windows + macOS installers and creates a release
 
 ---
 
@@ -118,3 +151,5 @@ Made with ❤️ by [Ben Akiva](https://github.com/dartaryan)
 ## License
 
 MIT License — feel free to use, modify, and distribute.
+
+FFmpeg is bundled under the LGPL license. See [ffmpeg.org/legal.html](https://www.ffmpeg.org/legal.html) for details.
