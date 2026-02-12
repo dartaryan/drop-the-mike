@@ -1690,9 +1690,14 @@
     </footer>
 
     <script>
-        // Accordion toggle — one at a time
+        // Accordion toggle — one at a time, no scroll jump
         function toggleAccordion(index) {
             const items = document.querySelectorAll('.accordion-item');
+            const clickedItem = items[index];
+            const rect = clickedItem.getBoundingClientRect();
+            const topBefore = rect.top;
+            const isOpening = !clickedItem.classList.contains('active');
+
             items.forEach(function(item, i) {
                 if (i === index) {
                     item.classList.toggle('active');
@@ -1700,6 +1705,22 @@
                     item.classList.remove('active');
                 }
             });
+
+            // Compensate scroll so the clicked item stays in place
+            const topAfter = clickedItem.getBoundingClientRect().top;
+            const diff = topAfter - topBefore;
+            if (diff !== 0) {
+                window.scrollBy(0, diff);
+            }
+
+            // After opening, smooth-scroll so the header is visible at top
+            if (isOpening) {
+                setTimeout(function() {
+                    var headerHeight = document.querySelector('.header').offsetHeight;
+                    var itemTop = clickedItem.getBoundingClientRect().top + window.scrollY;
+                    window.scrollTo({ top: itemTop - headerHeight - 10, behavior: 'smooth' });
+                }, 500);
+            }
         }
 
         // Theme toggle
