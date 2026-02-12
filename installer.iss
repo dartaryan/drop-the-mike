@@ -50,7 +50,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; \
-    GroupDescription: "{cm:AdditionalIcons}"; Flags: checked
+    GroupDescription: "{cm:AdditionalIcons}"
 
 [Files]
 ; Main application (PyInstaller --onedir output)
