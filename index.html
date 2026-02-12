@@ -963,6 +963,60 @@
         @media (max-width: 480px) {
             .download-btn { padding: 12px 20px; font-size: 0.95rem; }
         }
+
+        /* ZIP / Portable download section */
+        .zip-section {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: var(--surface);
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+        }
+        .zip-section h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+            color: var(--foreground);
+        }
+        .zip-section h4 i {
+            color: var(--primary);
+        }
+        .zip-section p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+        }
+        .zip-links {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+        .zip-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border);
+            background: var(--background);
+            color: var(--foreground);
+        }
+        .zip-link:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-1px);
+        }
+        .zip-link i {
+            font-size: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -1096,6 +1150,38 @@
                                         <span class="callout-icon"><i class="ti ti-alert-triangle"></i></span>
                                         <p><strong>Note:</strong> If Windows shows "Windows protected your PC" — click "More info" then "Run anyway". This is a normal warning for software downloaded from the internet.</p>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ===== PORTABLE ZIP SECTION ===== -->
+                        <div class="zip-section">
+                            <div class="lang-he">
+                                <h4><i class="ti ti-file-zip"></i>גרסה ניידת (ZIP) — בלי התקנה</h4>
+                                <p>אם ההורדה נחסמת ברשת הארגונית, או אם אתם מעדיפים לא להתקין — הורידו את גרסת ה-ZIP. פשוט חלצו את הקובץ לתיקייה והפעילו את <strong>DropTheMike.exe</strong> (Windows) או <strong>DropTheMike.app</strong> (Mac).</p>
+                                <div class="zip-links">
+                                    <a href="https://github.com/dartaryan/drop-the-mike/releases/latest/download/DropTheMike-Windows.zip"
+                                       class="zip-link">
+                                        <i class="ti ti-brand-windows"></i> ZIP ל-Windows
+                                    </a>
+                                    <a href="https://github.com/dartaryan/drop-the-mike/releases/latest/download/DropTheMike-Mac.zip"
+                                       class="zip-link">
+                                        <i class="ti ti-brand-apple"></i> ZIP ל-Mac
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="lang-en">
+                                <h4><i class="ti ti-file-zip"></i>Portable version (ZIP) — no installation</h4>
+                                <p>If downloads are blocked by your corporate network, or you prefer not to install — download the ZIP version. Just extract to a folder and run <strong>DropTheMike.exe</strong> (Windows) or <strong>DropTheMike.app</strong> (Mac).</p>
+                                <div class="zip-links">
+                                    <a href="https://github.com/dartaryan/drop-the-mike/releases/latest/download/DropTheMike-Windows.zip"
+                                       class="zip-link">
+                                        <i class="ti ti-brand-windows"></i> Windows ZIP
+                                    </a>
+                                    <a href="https://github.com/dartaryan/drop-the-mike/releases/latest/download/DropTheMike-Mac.zip"
+                                       class="zip-link">
+                                        <i class="ti ti-brand-apple"></i> Mac ZIP
+                                    </a>
                                 </div>
                             </div>
                         </div>
