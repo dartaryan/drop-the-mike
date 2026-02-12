@@ -42,34 +42,34 @@ STRINGS = {
     },
     "instruction_step2": {
         "en": "2. Choose number of parts (tip: smaller parts work better with Gemini)",
-        "he": "2. בחר מספר חלקים (טיפ: חלקים קטנים יותר עובדים טוב יותר עם Gemini)"
+        "he": "2. בחר מספר חלקים (טיפ: חלקים קטנים יותר עובדים טוב יותר עם ג'ימיני)"
     },
     "instruction_step3": {
         "en": "3. Split and upload the parts to Gemini for transcription",
-        "he": "3. פצל והעלה את החלקים ל-Gemini לתמלול"
+        "he": "3. פצל והעלה את החלקים ל-ג'ימיני לתמלול"
     },
     "instruction_step4": {
         "en": "4. Send the transcripts to Mike agent for analysis",
-        "he": "4. שלח את התמלולים לסוכן Mike לניתוח"
+        "he": "4. שלח את התמלולים לסוכן מייק לניתוח"
     },
 
     # Instructions - Phase 2 (after split)
     "post_split_title": {"en": "NEXT STEPS", "he": "מה עכשיו?"},
     "post_step1": {
         "en": "1. Upload the split audio files to Gemini for transcription",
-        "he": "1. העלה את קבצי האודיו המפוצלים ל-Gemini לתמלול"
+        "he": "1. העלה את קבצי האודיו המפוצלים ל-ג'ימיני לתמלול"
     },
     "post_step2": {
         "en": "2. After transcription, open Mike agent and upload the text files",
-        "he": "2. אחרי התמלול, פתח את סוכן Mike והעלה את קבצי הטקסט"
+        "he": "2. אחרי התמלול, פתח את סוכן מייק והעלה את קבצי הטקסט"
     },
     "post_tip1": {
         "en": "Tip: If Gemini says the file is too long, use the re-split button below",
-        "he": "טיפ: אם Gemini אומר שהקובץ ארוך מדי, השתמש בכפתור הפיצול מחדש למטה"
+        "he": "טיפ: אם ג'ימיני אומר שהקובץ ארוך מדי, השתמש בכפתור הפיצול מחדש למטה"
     },
     "post_tip2": {
         "en": "Tip: A Gemini paid account supports longer audio files",
-        "he": "טיפ: חשבון Gemini בתשלום תומך בקבצי אודיו ארוכים יותר"
+        "he": "טיפ: חשבון ג'ימיני בתשלום תומך בקבצי אודיו ארוכים יותר"
     },
 
     # File selection
@@ -114,7 +114,7 @@ STRINGS = {
     },
 
     # Mike agent
-    "open_mike": {"en": "Open Mike Agent", "he": "פתח את סוכן Mike"},
+    "open_mike": {"en": "Open Mike Agent", "he": "פתח את הסוכן מייק"},
     "copy_link": {"en": "Copy Link", "he": "העתק קישור"},
     "link_copied": {"en": "Link copied to clipboard!", "he": "הקישור הועתק!"},
 
@@ -148,22 +148,25 @@ STRINGS = {
 
 
 def t(key: str, lang: str, **kwargs) -> str:
-    """Get translated string"""
+    """Get translated string with proper RTL handling for Hebrew"""
     s = STRINGS.get(key, {}).get(lang, key)
     for k, v in kwargs.items():
         s = s.replace(f"{{{k}}}", str(v))
+    # Prepend RTL mark for Hebrew so numbers and punctuation render correctly
+    if lang == "he" and s and s != key:
+        s = "\u200F" + s
     return s
 
 
 # ============================================================================
-# DESIGN SYSTEM - Green Theme (Hebrew Markdown Export inspired)
+# DESIGN SYSTEM - Light Green Theme (Hebrew Markdown Export inspired)
 # ============================================================================
 class Colors:
-    """Green theme color palette"""
-    BG_BASE = "#0f1f1a"
-    BG_SURFACE = "#132520"
-    BG_ELEVATED = "#1a3029"
-    BG_INPUT = "#0f1f1a"
+    """Light green theme color palette"""
+    BG_BASE = "#FFFFFF"
+    BG_SURFACE = "#F0FDF4"
+    BG_ELEVATED = "#ecfdf5"
+    BG_INPUT = "#FFFFFF"
 
     PRIMARY = "#10B981"
     PRIMARY_HOVER = "#059669"
@@ -171,17 +174,22 @@ class Colors:
     ACCENT_HOVER = "#34D399"
     DARK_GREEN = "#064E3B"
 
-    TEXT_PRIMARY = "#ecfdf5"
-    TEXT_SECONDARY = "#a7f3d0"
-    TEXT_MUTED = "#6ee7b7"
-    TEXT_DISABLED = "#4a7c6b"
+    TEXT_PRIMARY = "#064E3B"
+    TEXT_SECONDARY = "#047857"
+    TEXT_MUTED = "#6B7280"
+    TEXT_DISABLED = "#9CA3AF"
 
-    BORDER = "#064e3b"
+    BORDER = "#d1fae5"
     BORDER_FOCUS = "#10B981"
 
     SUCCESS = "#10B981"
     ERROR = "#ef4444"
-    WARNING = "#f59e0b"
+    WARNING = "#b45309"
+
+    # Button-specific
+    BTN_SECONDARY_BG = "#F0FDF4"
+    BTN_SECONDARY_HOVER = "#d1fae5"
+    BTN_SECONDARY_TEXT = "#047857"
 
 
 class Fonts:
@@ -396,12 +404,12 @@ class GreenButton(ctk.CTkButton):
         super().__init__(master, **kwargs)
 
 
-class DarkButton(ctk.CTkButton):
-    """Dark secondary button"""
+class SecondaryButton(ctk.CTkButton):
+    """Light secondary button"""
     def __init__(self, master, **kwargs):
-        kwargs.setdefault('fg_color', "transparent")
-        kwargs.setdefault('hover_color', Colors.BG_ELEVATED)
-        kwargs.setdefault('text_color', Colors.TEXT_SECONDARY)
+        kwargs.setdefault('fg_color', Colors.BTN_SECONDARY_BG)
+        kwargs.setdefault('hover_color', Colors.BTN_SECONDARY_HOVER)
+        kwargs.setdefault('text_color', Colors.BTN_SECONDARY_TEXT)
         kwargs.setdefault('font', Fonts.BUTTON)
         kwargs.setdefault('corner_radius', 25)
         kwargs.setdefault('height', 36)
@@ -436,8 +444,8 @@ class DropTheMikeApp(ctk.CTk):
         self.minsize(600, 650)
         self.configure(fg_color=Colors.BG_BASE)
 
-        # Set appearance
-        ctk.set_appearance_mode("dark")
+        # Set appearance - LIGHT mode
+        ctk.set_appearance_mode("light")
 
         # State
         self.selected_file: Optional[str] = None
@@ -451,6 +459,8 @@ class DropTheMikeApp(ctk.CTk):
 
         # Widget registry for i18n updates: list of (widget, string_key, config_key)
         self._i18n_registry: List[tuple] = []
+        # Labels that need RTL/LTR alignment updates
+        self._directional_labels: List = []
 
         # Build UI
         self._create_ui()
@@ -471,11 +481,41 @@ class DropTheMikeApp(ctk.CTk):
         """Register a widget for language updates"""
         self._i18n_registry.append((widget, key, config_key))
 
+    @property
+    def _anchor(self) -> str:
+        """Get text anchor based on language direction"""
+        return "e" if self.lang == "he" else "w"
+
+    @property
+    def _justify(self) -> str:
+        """Get text justify based on language direction"""
+        return "right" if self.lang == "he" else "left"
+
+    @property
+    def _pack_side(self) -> str:
+        """Get pack side for directional elements"""
+        return "right" if self.lang == "he" else "left"
+
+    @property
+    def _pack_side_opp(self) -> str:
+        """Get opposite pack side"""
+        return "left" if self.lang == "he" else "right"
+
     def _refresh_ui(self):
-        """Update all registered widgets with current language"""
+        """Update all registered widgets with current language and alignment"""
+        anchor = self._anchor
+        justify = self._justify
+
         for widget, key, config_key in self._i18n_registry:
             try:
                 widget.configure(**{config_key: t(key, self.lang)})
+            except Exception:
+                pass
+
+        # Update alignment on all directional labels
+        for widget in self._directional_labels:
+            try:
+                widget.configure(anchor=anchor, justify=justify)
             except Exception:
                 pass
 
@@ -483,6 +523,14 @@ class DropTheMikeApp(ctk.CTk):
         quality_options = self._get_quality_options()
         self.quality_menu.configure(values=quality_options)
         self.quality_var.set(quality_options[0])
+
+        # Re-pack directional labels with correct anchor
+        for widget in self._directional_labels:
+            try:
+                pack_info = widget.pack_info()
+                widget.pack_configure(anchor=anchor)
+            except Exception:
+                pass
 
         # Update preview
         self._update_preview()
@@ -506,8 +554,8 @@ class DropTheMikeApp(ctk.CTk):
         self.scroll_frame = ctk.CTkScrollableFrame(
             self,
             fg_color=Colors.BG_BASE,
-            scrollbar_button_color=Colors.PRIMARY,
-            scrollbar_button_hover_color=Colors.PRIMARY_HOVER
+            scrollbar_button_color=Colors.ACCENT,
+            scrollbar_button_hover_color=Colors.PRIMARY
         )
         self.scroll_frame.pack(fill="both", expand=True, padx=20, pady=20)
 
@@ -546,7 +594,7 @@ class DropTheMikeApp(ctk.CTk):
         header_frame = ctk.CTkFrame(self.scroll_frame, fg_color="transparent")
         header_frame.pack(fill="x", pady=(0, 15))
 
-        # Top accent line (gradient effect with green)
+        # Top accent line
         accent_line = ctk.CTkFrame(header_frame, fg_color=Colors.PRIMARY, height=3, corner_radius=2)
         accent_line.pack(fill="x", pady=(0, 12))
 
@@ -558,20 +606,20 @@ class DropTheMikeApp(ctk.CTk):
             top_row,
             text="🎤 DROP THE MIKE",
             font=Fonts.HEADER_LARGE,
-            text_color=Colors.TEXT_PRIMARY
+            text_color=Colors.DARK_GREEN
         )
         title.pack(side="left", padx=(5, 0))
 
         # Language toggle button
-        self.lang_btn = DarkButton(
+        self.lang_btn = SecondaryButton(
             top_row,
             text=t("lang_toggle", self.lang),
             command=self._toggle_language,
             width=80,
             height=32,
             corner_radius=16,
-            border_color=Colors.ACCENT,
-            text_color=Colors.ACCENT
+            border_color=Colors.PRIMARY,
+            text_color=Colors.PRIMARY
         )
         self.lang_btn.pack(side="right", padx=(0, 5))
         self._register_i18n(self.lang_btn, "lang_toggle")
@@ -585,6 +633,7 @@ class DropTheMikeApp(ctk.CTk):
         )
         self.subtitle_label.pack(pady=(5, 0))
         self._register_i18n(self.subtitle_label, "subtitle")
+        self._directional_labels.append(self.subtitle_label)
 
         # Bottom accent line
         accent_line2 = ctk.CTkFrame(header_frame, fg_color=Colors.PRIMARY, height=3, corner_radius=2)
@@ -605,37 +654,30 @@ class DropTheMikeApp(ctk.CTk):
         inner = ctk.CTkFrame(self.instructions_card, fg_color="transparent")
         inner.pack(fill="x", padx=18, pady=15)
 
+        a = self._anchor
+        j = self._justify
+
         self.lbl_instructions_title = ctk.CTkLabel(
             inner,
             text=t("instructions_title", self.lang),
             font=Fonts.HEADER_SMALL,
-            text_color=Colors.PRIMARY
+            text_color=Colors.PRIMARY,
+            anchor=a, justify=j
         )
-        self.lbl_instructions_title.pack(anchor="w")
+        self.lbl_instructions_title.pack(anchor=a, fill="x")
         self._register_i18n(self.lbl_instructions_title, "instructions_title")
+        self._directional_labels.append(self.lbl_instructions_title)
 
         steps_frame = ctk.CTkFrame(inner, fg_color="transparent")
         steps_frame.pack(fill="x", pady=(8, 0))
 
-        self.lbl_step1 = ctk.CTkLabel(steps_frame, text=t("instruction_step1", self.lang),
-                                       font=Fonts.BODY, text_color=Colors.TEXT_SECONDARY, anchor="w", justify="left")
-        self.lbl_step1.pack(anchor="w", pady=2)
-        self._register_i18n(self.lbl_step1, "instruction_step1")
-
-        self.lbl_step2 = ctk.CTkLabel(steps_frame, text=t("instruction_step2", self.lang),
-                                       font=Fonts.BODY, text_color=Colors.TEXT_SECONDARY, anchor="w", justify="left")
-        self.lbl_step2.pack(anchor="w", pady=2)
-        self._register_i18n(self.lbl_step2, "instruction_step2")
-
-        self.lbl_step3 = ctk.CTkLabel(steps_frame, text=t("instruction_step3", self.lang),
-                                       font=Fonts.BODY, text_color=Colors.TEXT_SECONDARY, anchor="w", justify="left")
-        self.lbl_step3.pack(anchor="w", pady=2)
-        self._register_i18n(self.lbl_step3, "instruction_step3")
-
-        self.lbl_step4 = ctk.CTkLabel(steps_frame, text=t("instruction_step4", self.lang),
-                                       font=Fonts.BODY, text_color=Colors.TEXT_SECONDARY, anchor="w", justify="left")
-        self.lbl_step4.pack(anchor="w", pady=2)
-        self._register_i18n(self.lbl_step4, "instruction_step4")
+        for key in ["instruction_step1", "instruction_step2", "instruction_step3", "instruction_step4"]:
+            lbl = ctk.CTkLabel(steps_frame, text=t(key, self.lang),
+                               font=Fonts.BODY, text_color=Colors.TEXT_SECONDARY, anchor=a, justify=j)
+            lbl.pack(anchor=a, fill="x", pady=2)
+            self._register_i18n(lbl, key)
+            self._directional_labels.append(lbl)
+            setattr(self, f"lbl_{key.split('_', 1)[1]}", lbl)
 
     # ------------------------------------------------------------------
     # FILE SELECTION
@@ -651,14 +693,18 @@ class DropTheMikeApp(ctk.CTk):
         inner = ctk.CTkFrame(card, fg_color="transparent")
         inner.pack(fill="x", padx=18, pady=15)
 
+        a = self._anchor
+
         self.lbl_select_file = ctk.CTkLabel(
             inner,
             text=t("select_file", self.lang),
             font=Fonts.HEADER_SMALL,
-            text_color=Colors.PRIMARY
+            text_color=Colors.PRIMARY,
+            anchor=a
         )
-        self.lbl_select_file.pack(anchor="w")
+        self.lbl_select_file.pack(anchor=a, fill="x")
         self._register_i18n(self.lbl_select_file, "select_file")
+        self._directional_labels.append(self.lbl_select_file)
 
         # Drop zone
         self.drop_zone = ctk.CTkFrame(
@@ -699,17 +745,21 @@ class DropTheMikeApp(ctk.CTk):
             self.file_info_frame,
             text="",
             font=(Fonts.FAMILY_SANS, 12, "bold"),
-            text_color=Colors.TEXT_PRIMARY
+            text_color=Colors.TEXT_PRIMARY,
+            anchor=a
         )
-        self.file_name_label.pack(anchor="w")
+        self.file_name_label.pack(anchor=a, fill="x")
+        self._directional_labels.append(self.file_name_label)
 
         self.file_details_label = ctk.CTkLabel(
             self.file_info_frame,
             text="",
             font=Fonts.BODY_SMALL,
-            text_color=Colors.TEXT_SECONDARY
+            text_color=Colors.TEXT_SECONDARY,
+            anchor=a
         )
-        self.file_details_label.pack(anchor="w", pady=(2, 0))
+        self.file_details_label.pack(anchor=a, fill="x", pady=(2, 0))
+        self._directional_labels.append(self.file_details_label)
 
         self.file_info_frame.pack_forget()
 
@@ -727,14 +777,18 @@ class DropTheMikeApp(ctk.CTk):
         inner = ctk.CTkFrame(card, fg_color="transparent")
         inner.pack(fill="x", padx=18, pady=15)
 
+        a = self._anchor
+
         self.lbl_settings = ctk.CTkLabel(
             inner,
             text=t("settings", self.lang),
             font=Fonts.HEADER_SMALL,
-            text_color=Colors.PRIMARY
+            text_color=Colors.PRIMARY,
+            anchor=a
         )
-        self.lbl_settings.pack(anchor="w")
+        self.lbl_settings.pack(anchor=a, fill="x")
         self._register_i18n(self.lbl_settings, "settings")
+        self._directional_labels.append(self.lbl_settings)
 
         settings_frame = ctk.CTkFrame(inner, fg_color="transparent")
         settings_frame.pack(fill="x", pady=(10, 0))
@@ -769,10 +823,10 @@ class DropTheMikeApp(ctk.CTk):
             to=10,
             number_of_steps=8,
             command=self._on_parts_change,
-            fg_color=Colors.BG_ELEVATED,
-            progress_color=Colors.DARK_GREEN,
+            fg_color=Colors.BORDER,
+            progress_color=Colors.PRIMARY,
             button_color=Colors.PRIMARY,
-            button_hover_color=Colors.ACCENT,
+            button_hover_color=Colors.DARK_GREEN,
             height=16
         )
         self.parts_slider.set(3)
@@ -786,10 +840,12 @@ class DropTheMikeApp(ctk.CTk):
             quality_frame,
             text=t("quality", self.lang),
             font=Fonts.BODY,
-            text_color=Colors.TEXT_PRIMARY
+            text_color=Colors.TEXT_PRIMARY,
+            anchor=a
         )
-        self.lbl_quality.pack(anchor="w")
+        self.lbl_quality.pack(anchor=a, fill="x")
         self._register_i18n(self.lbl_quality, "quality")
+        self._directional_labels.append(self.lbl_quality)
 
         quality_options = self._get_quality_options()
         self.quality_var = ctk.StringVar(value=quality_options[0])
@@ -799,16 +855,18 @@ class DropTheMikeApp(ctk.CTk):
             variable=self.quality_var,
             values=quality_options,
             fg_color=Colors.BG_ELEVATED,
-            button_color=Colors.DARK_GREEN,
-            button_hover_color=Colors.PRIMARY,
+            button_color=Colors.PRIMARY,
+            button_hover_color=Colors.DARK_GREEN,
             dropdown_fg_color=Colors.BG_SURFACE,
             dropdown_hover_color=Colors.BG_ELEVATED,
+            dropdown_text_color=Colors.TEXT_PRIMARY,
             font=Fonts.BODY,
+            text_color=Colors.TEXT_PRIMARY,
             width=250,
             height=32,
             corner_radius=8
         )
-        self.quality_menu.pack(anchor="w", pady=(5, 0))
+        self.quality_menu.pack(anchor=a, pady=(5, 0))
 
         # --- Output folder ---
         output_frame = ctk.CTkFrame(settings_frame, fg_color="transparent")
@@ -818,10 +876,12 @@ class DropTheMikeApp(ctk.CTk):
             output_frame,
             text=t("output_folder", self.lang),
             font=Fonts.BODY,
-            text_color=Colors.TEXT_PRIMARY
+            text_color=Colors.TEXT_PRIMARY,
+            anchor=a
         )
-        self.lbl_output_folder.pack(anchor="w")
+        self.lbl_output_folder.pack(anchor=a, fill="x")
         self._register_i18n(self.lbl_output_folder, "output_folder")
+        self._directional_labels.append(self.lbl_output_folder)
 
         output_select_frame = ctk.CTkFrame(output_frame, fg_color="transparent")
         output_select_frame.pack(fill="x", pady=(5, 0))
@@ -836,7 +896,7 @@ class DropTheMikeApp(ctk.CTk):
         self.output_path_label.pack(side="left", fill="x", expand=True)
         self._register_i18n(self.output_path_label, "same_as_input")
 
-        self.btn_change_output = DarkButton(
+        self.btn_change_output = SecondaryButton(
             output_select_frame,
             text=t("change", self.lang),
             command=self._browse_output,
@@ -860,25 +920,29 @@ class DropTheMikeApp(ctk.CTk):
         inner = ctk.CTkFrame(card, fg_color="transparent")
         inner.pack(fill="x", padx=18, pady=15)
 
+        a = self._anchor
+        j = self._justify
+
         self.lbl_preview = ctk.CTkLabel(
             inner,
             text=t("preview", self.lang),
             font=Fonts.HEADER_SMALL,
-            text_color=Colors.PRIMARY
+            text_color=Colors.PRIMARY,
+            anchor=a
         )
-        self.lbl_preview.pack(anchor="w")
+        self.lbl_preview.pack(anchor=a, fill="x")
         self._register_i18n(self.lbl_preview, "preview")
+        self._directional_labels.append(self.lbl_preview)
 
         self.preview_content = ctk.CTkLabel(
             inner,
             text=t("preview_hint", self.lang),
             font=Fonts.BODY_SMALL,
-            text_color=Colors.TEXT_DISABLED,
+            text_color=Colors.TEXT_MUTED,
             justify="left",
             anchor="w"
         )
-        self.preview_content.pack(anchor="w", pady=(8, 0))
-        self._register_i18n(self.preview_content, "preview_hint")
+        self.preview_content.pack(anchor="w", fill="x", pady=(8, 0))
 
     # ------------------------------------------------------------------
     # ACTIONS
@@ -905,7 +969,7 @@ class DropTheMikeApp(ctk.CTk):
         secondary_frame = ctk.CTkFrame(actions_frame, fg_color="transparent")
         secondary_frame.pack(fill="x", pady=(8, 0))
 
-        self.btn_clear = DarkButton(
+        self.btn_clear = SecondaryButton(
             secondary_frame,
             text=t("clear", self.lang),
             command=self._clear_all,
@@ -914,7 +978,7 @@ class DropTheMikeApp(ctk.CTk):
         self.btn_clear.pack(side="left")
         self._register_i18n(self.btn_clear, "clear")
 
-        self.btn_open_folder = DarkButton(
+        self.btn_open_folder = SecondaryButton(
             secondary_frame,
             text=t("open_folder", self.lang),
             command=self._open_output_folder,
@@ -934,7 +998,7 @@ class DropTheMikeApp(ctk.CTk):
 
         self.progress_bar = ctk.CTkProgressBar(
             self.progress_frame,
-            fg_color=Colors.BG_ELEVATED,
+            fg_color=Colors.BORDER,
             progress_color=Colors.PRIMARY,
             height=8,
             corner_radius=4
@@ -946,7 +1010,7 @@ class DropTheMikeApp(ctk.CTk):
             self.progress_frame,
             text="",
             font=Fonts.BODY_SMALL,
-            text_color=Colors.TEXT_SECONDARY
+            text_color=Colors.TEXT_MUTED
         )
         self.progress_label.pack(anchor="w", pady=(5, 0))
 
@@ -960,11 +1024,14 @@ class DropTheMikeApp(ctk.CTk):
         self.post_split_frame = ctk.CTkFrame(self.scroll_frame, fg_color="transparent")
         self.post_split_frame.pack(fill="x", pady=(5, 0))
 
+        a = self._anchor
+        j = self._justify
+
         # --- Post-split instructions card ---
         self.post_card = Card(self.post_split_frame)
         self.post_card.pack(fill="x", pady=(0, 10))
 
-        accent = ctk.CTkFrame(self.post_card, fg_color=Colors.ACCENT, height=4, corner_radius=0)
+        accent = ctk.CTkFrame(self.post_card, fg_color=Colors.PRIMARY, height=4, corner_radius=0)
         accent.pack(fill="x", side="top")
 
         inner = ctk.CTkFrame(self.post_card, fg_color="transparent")
@@ -974,40 +1041,47 @@ class DropTheMikeApp(ctk.CTk):
             inner,
             text=t("post_split_title", self.lang),
             font=Fonts.HEADER_SMALL,
-            text_color=Colors.ACCENT
+            text_color=Colors.DARK_GREEN,
+            anchor=a
         )
-        self.lbl_post_title.pack(anchor="w")
+        self.lbl_post_title.pack(anchor=a, fill="x")
         self._register_i18n(self.lbl_post_title, "post_split_title")
+        self._directional_labels.append(self.lbl_post_title)
 
         steps_frame = ctk.CTkFrame(inner, fg_color="transparent")
         steps_frame.pack(fill="x", pady=(8, 0))
 
         self.lbl_post_step1 = ctk.CTkLabel(steps_frame, text=t("post_step1", self.lang),
-                                             font=Fonts.BODY, text_color=Colors.TEXT_SECONDARY, anchor="w", justify="left")
-        self.lbl_post_step1.pack(anchor="w", pady=2)
+                                             font=Fonts.BODY, text_color=Colors.TEXT_SECONDARY, anchor=a, justify=j)
+        self.lbl_post_step1.pack(anchor=a, fill="x", pady=2)
         self._register_i18n(self.lbl_post_step1, "post_step1")
+        self._directional_labels.append(self.lbl_post_step1)
 
         self.lbl_post_step2 = ctk.CTkLabel(steps_frame, text=t("post_step2", self.lang),
-                                             font=Fonts.BODY, text_color=Colors.TEXT_SECONDARY, anchor="w", justify="left")
-        self.lbl_post_step2.pack(anchor="w", pady=2)
+                                             font=Fonts.BODY, text_color=Colors.TEXT_SECONDARY, anchor=a, justify=j)
+        self.lbl_post_step2.pack(anchor=a, fill="x", pady=2)
         self._register_i18n(self.lbl_post_step2, "post_step2")
+        self._directional_labels.append(self.lbl_post_step2)
 
         # Tips
-        tips_frame = ctk.CTkFrame(inner, fg_color=Colors.BG_ELEVATED, corner_radius=10)
+        tips_frame = ctk.CTkFrame(inner, fg_color="#FFFBEB", corner_radius=10,
+                                   border_width=1, border_color="#FDE68A")
         tips_frame.pack(fill="x", pady=(10, 0))
 
         tips_inner = ctk.CTkFrame(tips_frame, fg_color="transparent")
         tips_inner.pack(fill="x", padx=12, pady=10)
 
         self.lbl_post_tip1 = ctk.CTkLabel(tips_inner, text=t("post_tip1", self.lang),
-                                            font=Fonts.BODY_SMALL, text_color=Colors.WARNING, anchor="w", justify="left")
-        self.lbl_post_tip1.pack(anchor="w", pady=1)
+                                            font=Fonts.BODY_SMALL, text_color=Colors.WARNING, anchor=a, justify=j)
+        self.lbl_post_tip1.pack(anchor=a, fill="x", pady=1)
         self._register_i18n(self.lbl_post_tip1, "post_tip1")
+        self._directional_labels.append(self.lbl_post_tip1)
 
         self.lbl_post_tip2 = ctk.CTkLabel(tips_inner, text=t("post_tip2", self.lang),
-                                            font=Fonts.BODY_SMALL, text_color=Colors.WARNING, anchor="w", justify="left")
-        self.lbl_post_tip2.pack(anchor="w", pady=1)
+                                            font=Fonts.BODY_SMALL, text_color=Colors.WARNING, anchor=a, justify=j)
+        self.lbl_post_tip2.pack(anchor=a, fill="x", pady=1)
         self._register_i18n(self.lbl_post_tip2, "post_tip2")
+        self._directional_labels.append(self.lbl_post_tip2)
 
         # --- Mike agent buttons ---
         mike_frame = ctk.CTkFrame(inner, fg_color="transparent")
@@ -1023,27 +1097,27 @@ class DropTheMikeApp(ctk.CTk):
         self.btn_open_mike.pack(side="left", padx=(0, 8))
         self._register_i18n(self.btn_open_mike, "open_mike")
 
-        self.btn_copy_link = DarkButton(
+        self.btn_copy_link = SecondaryButton(
             mike_frame,
             text=t("copy_link", self.lang),
             command=self._copy_mike_link,
             width=130,
             height=40,
-            border_color=Colors.ACCENT,
-            text_color=Colors.ACCENT
+            border_color=Colors.PRIMARY,
+            text_color=Colors.PRIMARY
         )
         self.btn_copy_link.pack(side="left")
         self._register_i18n(self.btn_copy_link, "copy_link")
 
         # --- Re-split button ---
-        self.btn_resplit = DarkButton(
+        self.btn_resplit = SecondaryButton(
             self.post_split_frame,
             text=t("resplit", self.lang),
             command=self._resplit,
             height=38,
             border_color=Colors.WARNING,
             text_color=Colors.WARNING,
-            hover_color="#3d2a0a"
+            hover_color="#FEF3C7"
         )
         self.btn_resplit.pack(fill="x", pady=(0, 5))
         self._register_i18n(self.btn_resplit, "resplit")
@@ -1071,18 +1145,18 @@ class DropTheMikeApp(ctk.CTk):
             credits_frame,
             text="Made with ❤️ by Ben Akiva",
             font=Fonts.BODY_SMALL,
-            text_color=Colors.TEXT_DISABLED
+            text_color=Colors.TEXT_MUTED
         )
         heart_text.pack(side="left", padx=(0, 8))
 
-        # GitHub link button (with text since we can't easily add SVG icons in customtkinter)
+        # GitHub link button
         github_btn = ctk.CTkButton(
             credits_frame,
             text="GitHub",
             font=(Fonts.FAMILY_SANS, 10, "bold"),
             fg_color="transparent",
             hover_color=Colors.BG_ELEVATED,
-            text_color=Colors.TEXT_DISABLED,
+            text_color=Colors.PRIMARY,
             width=60,
             height=24,
             corner_radius=12,
@@ -1144,7 +1218,7 @@ class DropTheMikeApp(ctk.CTk):
         self.file_details_label.configure(text=details)
         self.file_info_frame.pack(fill="x", pady=(10, 0))
 
-        self.drop_label.configure(text=t("file_loaded", self.lang), text_color=Colors.SUCCESS)
+        self.drop_label.configure(text=t("file_loaded", self.lang), text_color=Colors.PRIMARY)
         self.split_btn.configure(state="normal")
         self._update_preview()
 
