@@ -4,9 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DROP THE MIKE - Instructions | הוראות שימוש</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#064E3B">
+
+    <!-- SEO & Description -->
+    <meta name="description" content="DROP THE MIKE — כלי חינמי לפיצול קבצי אודיו, תמלול עם AI ועיבוד תמלולים למסמכים מקצועיים. Free tool for splitting audio, AI transcription and professional document generation.">
+    <meta name="author" content="Ben Akiva">
+
+    <!-- Open Graph / WhatsApp / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dartaryan.github.io/drop-the-mike/">
+    <meta property="og:title" content="DROP THE MIKE — Audio Splitter & AI Transcription">
+    <meta property="og:description" content="כלי חינמי לפיצול קבצי אודיו, תמלול עם AI ועיבוד תמלולים למסמכים מקצועיים.">
+    <meta property="og:image" content="https://dartaryan.github.io/drop-the-mike/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="1200">
+    <meta property="og:locale" content="he_IL">
+    <meta property="og:locale:alternate" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DROP THE MIKE — Audio Splitter & AI Transcription">
+    <meta name="twitter:description" content="כלי חינמי לפיצול קבצי אודיו, תמלול עם AI ועיבוד תמלולים למסמכים מקצועיים.">
+    <meta name="twitter:image" content="https://dartaryan.github.io/drop-the-mike/assets/og-image.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&family=Heebo:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
     <style>
         :root {
             --primary: #10B981;
@@ -27,7 +57,7 @@
             --warning-bg: #fef3c7;
             --warning-border: #f59e0b;
             --warning-text: #92400e;
-            --font-body: 'Heebo', 'Varela Round', system-ui, sans-serif;
+            --font-body: 'Varela Round', 'Heebo', system-ui, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
@@ -127,6 +157,35 @@
             align-items: center;
         }
 
+        .header-credit {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .header-credit a {
+            color: rgba(255,255,255,0.8);
+            border-bottom: none;
+        }
+
+        .header-credit a:hover {
+            color: var(--secondary);
+            border-bottom: none;
+        }
+
+        .heart-icon {
+            color: #ef4444;
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+
+        .heart-icon::before {
+            content: "\2764";
+            font-family: inherit;
+        }
+
         /* Theme & Language Toggle Buttons */
         .toggle-btn {
             display: inline-flex;
@@ -155,6 +214,10 @@
             height: 18px;
         }
 
+        .toggle-btn i {
+            font-size: 1.1rem;
+        }
+
         /* Main Content */
         .main-content {
             position: relative;
@@ -171,10 +234,11 @@
             margin-bottom: 2rem;
         }
 
-        .hero-emoji {
+        .hero-icon {
             font-size: 4rem;
             margin-bottom: 1rem;
             display: block;
+            color: var(--secondary);
         }
 
         .hero h1 {
@@ -197,61 +261,82 @@
             line-height: 1.7;
         }
 
-        /* Cards */
-        .card {
-            background: var(--background);
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 2rem;
-            position: relative;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: slideInFromBottom 0.4s ease-out;
+        .hero-description {
+            margin-top: 1.5rem;
+            padding: 1.5rem 2rem;
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid rgba(110, 231, 183, 0.15);
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        .hero-description p {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 0.75rem;
         }
 
-        .card:hover {
-            box-shadow: var(--card-hover-shadow);
-            transform: translateY(-3px);
+        .hero-description p:last-child {
+            margin-bottom: 0;
         }
 
-        .card-header {
-            padding: 1.25rem 1.75rem;
-            border-bottom: 1px solid var(--border);
-            background: var(--surface);
+        .hero-cta {
+            margin-top: 2rem;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1rem;
         }
 
-        .card-header-icon {
-            width: 36px;
-            height: 36px;
+        .hero-cta .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem 2rem;
             background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             color: white;
+            border: none;
+            border-radius: 30px;
+            font-family: var(--font-body);
             font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-
-        .card-header h2 {
-            font-size: 1.2rem;
             font-weight: 600;
-            color: var(--foreground);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border-bottom: none;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
         }
 
+        .hero-cta .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5);
+            border-bottom: none;
+        }
+
+        .hero-cta .cta-btn i {
+            font-size: 1.3rem;
+        }
+
+        .hero-credit {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .hero-credit a {
+            color: rgba(255,255,255,0.7);
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .hero-credit a:hover {
+            color: var(--secondary);
+            border-bottom-color: var(--secondary);
+        }
+
+        /* Cards (kept for inside accordion) */
         .card-body {
             padding: 1.75rem;
         }
@@ -437,15 +522,6 @@
             color: #fde68a;
         }
 
-        /* Workflow Arrow */
-        .workflow-arrow {
-            text-align: center;
-            padding: 0.75rem 0;
-            font-size: 1.5rem;
-            color: var(--primary);
-            opacity: 0.7;
-        }
-
         /* Badge */
         .badge {
             display: inline-flex;
@@ -459,14 +535,6 @@
             font-weight: 600;
         }
 
-        /* Section Divider */
-        .section-divider {
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), transparent);
-            border-radius: 3px;
-            margin: 0.5rem 0 1.5rem;
-        }
-
         /* Links */
         a {
             color: var(--primary);
@@ -477,6 +545,36 @@
 
         a:hover {
             border-bottom-color: var(--primary);
+        }
+
+        /* Mike Agent Link Button (in steps) */
+        .mike-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border-bottom: none;
+            margin-top: 0.5rem;
+        }
+
+        .mike-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            border-bottom: none;
+        }
+
+        .mike-link i {
+            font-size: 1.1rem;
         }
 
         /* Download Button */
@@ -504,6 +602,143 @@
             border-bottom: none;
         }
 
+        /* ==================== ACCORDION ==================== */
+        .accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .accordion-item {
+            background: var(--background);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideInFromBottom 0.4s ease-out;
+        }
+
+        .accordion-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .accordion-item.active::before {
+            opacity: 1;
+        }
+
+        .accordion-header {
+            padding: 1.1rem 1.75rem;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+            border: none;
+            width: 100%;
+            font-family: var(--font-body);
+            color: var(--foreground);
+            text-align: right;
+        }
+
+        [dir="ltr"] .accordion-header {
+            text-align: left;
+        }
+
+        .accordion-header:hover {
+            background: var(--border-light);
+        }
+
+        .accordion-item.active .accordion-header {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .accordion-header-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .accordion-header h2 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--foreground);
+            flex: 1;
+        }
+
+        .accordion-header .accordion-step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .accordion-chevron {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+        }
+
+        .accordion-item.active .accordion-chevron {
+            transform: rotate(180deg);
+            color: var(--primary);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .accordion-item.active .accordion-content {
+            max-height: 5000px;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .accordion-body {
+            padding: 1.75rem;
+        }
+
+        .accordion-body p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .accordion-body p:last-child {
+            margin-bottom: 0;
+        }
+
         /* Footer */
         .footer {
             position: relative;
@@ -521,6 +756,11 @@
             margin-bottom: 1rem;
             color: white;
             font-size: 1.1rem;
+        }
+
+        .footer-logo i {
+            font-size: 1.3rem;
+            color: var(--secondary);
         }
 
         .footer-text {
@@ -563,39 +803,10 @@
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--dark); }
 
-        /* Quick Download Section */
-        .quick-download {
-            text-align: center;
-            padding: 2rem;
-            background: var(--surface);
-            border-radius: 16px;
-            border: 2px dashed var(--primary);
-            margin: 1.5rem 0;
-        }
-
-        .quick-download p {
-            margin-bottom: 1rem;
-            font-size: 1rem;
-            color: var(--text-secondary);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                padding: 0.5rem 0.75rem;
-                gap: 0.5rem;
-            }
-            .hero h1 { font-size: 1.75rem; }
-            .hero p { font-size: 1rem; }
-            .main-content { padding: 7rem 1rem 1.5rem; }
-            .card-body { padding: 1.25rem; }
-            .toggle-btn span { display: none; }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 { font-size: 1.5rem; }
-            .main-content { padding: 7.5rem 0.75rem 1rem; }
+        /* Strong highlight in steps */
+        .highlight {
+            color: var(--primary);
+            font-weight: 600;
         }
 
         /* Language-specific visibility */
@@ -609,61 +820,30 @@
         html[dir="ltr"] .lang-he-inline { display: none; }
         html[dir="ltr"] .lang-en-inline { display: inline; }
 
-        /* TOC */
-        .toc {
-            list-style: none;
-            padding: 0;
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                padding: 0.5rem 0.75rem;
+                gap: 0.5rem;
+            }
+            .hero h1 { font-size: 1.75rem; }
+            .hero p { font-size: 1rem; }
+            .hero-icon { font-size: 3rem; }
+            .main-content { padding: 7rem 1rem 1.5rem; }
+            .accordion-body { padding: 1.25rem; }
+            .accordion-header { padding: 1rem 1.25rem; }
+            .accordion-header h2 { font-size: 1rem; }
+            .toggle-btn span { display: none; }
+            .hero-description { padding: 1rem 1.25rem; }
+            .header-credit { font-size: 0.75rem; }
         }
 
-        .toc li {
-            margin-bottom: 0.5rem;
-        }
-
-        .toc a {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1rem;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text-secondary);
-            font-weight: 500;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .toc a:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            transform: translateX(-4px);
-            border-bottom-color: var(--primary);
-        }
-
-        [dir="ltr"] .toc a:hover {
-            transform: translateX(4px);
-        }
-
-        .toc-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 26px;
-            height: 26px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            font-size: 0.75rem;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-
-        /* Strong highlight in steps */
-        .highlight {
-            color: var(--primary);
-            font-weight: 600;
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.5rem; }
+            .main-content { padding: 7.5rem 0.75rem 1rem; }
+            .accordion-header { padding: 0.85rem 1rem; gap: 0.5rem; }
+            .accordion-header-icon { width: 30px; height: 30px; font-size: 0.95rem; }
         }
     </style>
 </head>
@@ -672,16 +852,20 @@
     <!-- Header -->
     <header class="header">
         <div class="logo">
-            <div class="logo-icon">🎤</div>
+            <div class="logo-icon"><i class="ti ti-microphone-2"></i></div>
             <div class="logo-text">DROP THE <span>MIKE</span></div>
+        </div>
+        <div class="header-credit">
+            <span class="lang-he-inline">נבנה עם <span class="heart-icon"></span> ע"י <a href="https://github.com/dartaryan" target="_blank">בן עקיבא</a></span>
+            <span class="lang-en-inline">Built with <span class="heart-icon"></span> by <a href="https://github.com/dartaryan" target="_blank">Ben Akiva</a></span>
         </div>
         <div class="header-actions">
             <button class="toggle-btn" id="langToggle" onclick="toggleLanguage()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <i class="ti ti-world"></i>
                 <span id="langLabel">English</span>
             </button>
             <button class="toggle-btn" id="themeToggle" onclick="toggleTheme()">
-                <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <i class="ti ti-sun" id="themeIcon"></i>
                 <span id="themeLabel">Light</span>
             </button>
         </div>
@@ -690,597 +874,582 @@
     <!-- Main Content -->
     <div class="main-content">
 
-        <!-- Hero -->
+        <!-- Hero (includes "What is it?" + Ben Akiva credit + Mike CTA) -->
         <div class="hero">
-            <span class="hero-emoji">🎤</span>
+            <span class="hero-icon"><i class="ti ti-microphone-2"></i></span>
             <div class="lang-he">
                 <h1>DROP THE <span>MIKE</span></h1>
                 <p>מדריך מלא לפיצול קבצי אודיו, תמלול עם AI, ועיבוד תמלולים לתוך מסמכים מקצועיים ומסודרים.</p>
+                <div class="hero-description">
+                    <p><strong>DROP THE MIKE</strong> הוא כלי שולחני שמפצל קבצי אודיו ווידאו ארוכים לחלקים קטנים יותר, כדי שתוכלו להעלות אותם בקלות ל-Google Gemini לתמלול.</p>
+                    <p>אחרי התמלול, אתם עובדים עם <strong>מייק</strong> — סוכן בינה מלאכותית שנבנה על Gemini — שהופך תמלולים גולמיים של שיחות למסמכים נקיים, מסודרים ומקצועיים.</p>
+                    <p>התהליך עובד ב-<strong>3 שלבים פשוטים</strong>: תמלול &rarr; עיבוד &rarr; יצירת מסמך.</p>
+                </div>
             </div>
             <div class="lang-en">
                 <h1>DROP THE <span>MIKE</span></h1>
                 <p>Complete guide to splitting audio files, transcribing with AI, and processing transcripts into professional, structured documents.</p>
-            </div>
-        </div>
-
-        <!-- Table of Contents -->
-        <div class="card">
-            <div class="card-header">
-                <div class="card-header-icon">📋</div>
-                <h2>
-                    <span class="lang-he-inline">תוכן עניינים</span>
-                    <span class="lang-en-inline">Table of Contents</span>
-                </h2>
-            </div>
-            <div class="card-body">
-                <ul class="toc">
-                    <li>
-                        <a href="#what-is">
-                            <span class="toc-number">1</span>
-                            <span class="lang-he-inline">מה זה DROP THE MIKE?</span>
-                            <span class="lang-en-inline">What is DROP THE MIKE?</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#install">
-                            <span class="toc-number">2</span>
-                            <span class="lang-he-inline">התקנה על המחשב</span>
-                            <span class="lang-en-inline">Installation</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#split">
-                            <span class="toc-number">3</span>
-                            <span class="lang-he-inline">פיצול קבצי אודיו</span>
-                            <span class="lang-en-inline">Splitting Audio Files</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#stage1">
-                            <span class="toc-number">4</span>
-                            <span class="lang-he-inline">שלב 1 — תמלול עם מייק</span>
-                            <span class="lang-en-inline">Stage 1 — Transcription with Mike</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#stage2">
-                            <span class="toc-number">5</span>
-                            <span class="lang-he-inline">שלב 2 — עיבוד התמלול</span>
-                            <span class="lang-en-inline">Stage 2 — Processing the Transcript</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#stage3">
-                            <span class="toc-number">6</span>
-                            <span class="lang-he-inline">שלב 3 — יצירת המסמך הסופי</span>
-                            <span class="lang-en-inline">Stage 3 — Generating the Final Document</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#contact">
-                            <span class="toc-number">7</span>
-                            <span class="lang-he-inline">יצירת קשר</span>
-                            <span class="lang-en-inline">Contact</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Section 1: What is it? -->
-        <div class="card" id="what-is">
-            <div class="card-header">
-                <div class="card-header-icon">💡</div>
-                <h2>
-                    <span class="lang-he-inline">מה זה DROP THE MIKE?</span>
-                    <span class="lang-en-inline">What is DROP THE MIKE?</span>
-                </h2>
-            </div>
-            <div class="card-body">
-                <div class="lang-he">
-                    <p><strong>DROP THE MIKE</strong> הוא כלי שולחני שמפצל קבצי אודיו ווידאו ארוכים לחלקים קטנים יותר, כדי שתוכלו להעלות אותם בקלות ל-Google Gemini לתמלול.</p>
-                    <p>אחרי התמלול, אתם עובדים עם <strong>מייק</strong> 🎤 — סוכן בינה מלאכותית שנבנה על Gemini — שהופך תמלולים גולמיים של שיחות למסמכים נקיים, מסודרים ומקצועיים.</p>
-                    <p>התהליך עובד ב-<strong>3 שלבים פשוטים</strong>: תמלול → עיבוד → יצירת מסמך.</p>
-                </div>
-                <div class="lang-en">
+                <div class="hero-description">
                     <p><strong>DROP THE MIKE</strong> is a desktop tool that splits long audio and video files into smaller parts, making them easy to upload to Google Gemini for transcription.</p>
-                    <p>After transcription, you work with <strong>Mike</strong> 🎤 — an AI agent built on Gemini — that transforms raw conversation transcripts into clean, structured, professional documents.</p>
-                    <p>The process works in <strong>3 simple stages</strong>: Transcribe → Process → Generate document.</p>
+                    <p>After transcription, you work with <strong>Mike</strong> — an AI agent built on Gemini — that transforms raw conversation transcripts into clean, structured, professional documents.</p>
+                    <p>The process works in <strong>3 simple stages</strong>: Transcribe &rarr; Process &rarr; Generate document.</p>
                 </div>
+            </div>
+            <div class="hero-cta">
+                <a href="https://gemini.google.com/gem/124_L6lakUi2fZtfW7ETr38BB-RY2y3t8?usp=sharing" target="_blank" class="cta-btn">
+                    <i class="ti ti-microphone-2"></i>
+                    <span class="lang-he-inline">פתחו שיחה עם מייק</span>
+                    <span class="lang-en-inline">Open a chat with Mike</span>
+                </a>
+            </div>
+            <div class="hero-credit">
+                <span class="lang-he-inline">נבנה עם <span class="heart-icon"></span> על ידי <a href="https://github.com/dartaryan" target="_blank">בן עקיבא</a></span>
+                <span class="lang-en-inline">Made with <span class="heart-icon"></span> by <a href="https://github.com/dartaryan" target="_blank">Ben Akiva</a></span>
             </div>
         </div>
 
-        <!-- Section 2: Installation -->
-        <div class="card" id="install">
-            <div class="card-header">
-                <div class="card-header-icon">⚙️</div>
-                <h2>
-                    <span class="lang-he-inline">התקנה על המחשב</span>
-                    <span class="lang-en-inline">Installation</span>
-                </h2>
-            </div>
-            <div class="card-body">
-                <div class="lang-he">
-                    <p>לא צריך ניסיון טכני! עקבו אחרי השלבים הבאים:</p>
+        <!-- Accordion -->
+        <div class="accordion">
 
-                    <div class="step-card">
-                        <h4><span class="step-number">1</span>התקנת Python</h4>
-                        <p>Python היא תוכנה חינמית שהמחשב צריך כדי להריץ את הכלי. התקנה פשוטה:</p>
-                        <ul>
-                            <li>פתחו את <strong>Microsoft Store</strong> (לחצו על כפתור Start וחפשו "Microsoft Store")</li>
-                            <li>חפשו <strong>"Python 3.11"</strong></li>
-                            <li>לחצו על <strong>"Get"</strong> (קבל) — זה חינמי</li>
-                            <li>חכו שההתקנה תסתיים</li>
-                        </ul>
-                        <div class="callout callout-tip">
-                            <span class="callout-icon">💡</span>
-                            <p>אם כבר יש לכם Python 3.10 ומעלה, אפשר לדלג על שלב זה.</p>
-                        </div>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">2</span>התקנת FFmpeg</h4>
-                        <p>FFmpeg היא תוכנה חינמית שמאפשרת לעבד קבצי אודיו ווידאו. הדרך הכי קלה:</p>
-                        <ul>
-                            <li>לחצו על מקש <strong>Windows</strong> במקלדת</li>
-                            <li>הקלידו <strong>cmd</strong> ולחצו Enter</li>
-                            <li>בחלון השחור שנפתח, הקלידו את הפקודה הבאה ולחצו Enter:</li>
-                        </ul>
-                        <div class="code-block">
-                            <code><span class="command">winget install Gyan.FFmpeg</span></code>
-                        </div>
-                        <div class="callout callout-tip">
-                            <span class="callout-icon">💡</span>
-                            <p>אם הפקודה לא עובדת, אפשר להוריד FFmpeg ידנית מ-<a href="https://www.gyan.dev/ffmpeg/builds/" target="_blank">gyan.dev</a>, לחלץ את הקבצים ולשים את <code>ffmpeg.exe</code> באותה תיקייה עם התוכנה.</p>
-                        </div>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">3</span>הורדת DROP THE MIKE</h4>
-                        <p>הורידו את הכלי מ-GitHub:</p>
-                        <ul>
-                            <li>היכנסו לדף: <a href="https://github.com/dartaryan/drop-the-mike" target="_blank">github.com/dartaryan/drop-the-mike</a></li>
-                            <li>לחצו על הכפתור הירוק <strong>"&lt;&gt; Code"</strong></li>
-                            <li>בחרו <strong>"Download ZIP"</strong></li>
-                            <li>חלצו את הקובץ לתיקייה במחשב (למשל: שולחן העבודה)</li>
-                        </ul>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">4</span>הפעלת התוכנה</h4>
-                        <p>פתחו את התיקייה שחילצתם ולחצו פעמיים על <strong>drop_the_mike.bat</strong></p>
-                        <p>בהפעלה הראשונה, התוכנה תתקין אוטומטית את כל מה שהיא צריכה. פשוט חכו שהחלון ייפתח.</p>
-                        <div class="callout callout-warning">
-                            <span class="callout-icon">⚠️</span>
-                            <p><strong>שימו לב:</strong> אם Windows שואל "Windows protected your PC" — לחצו על "More info" ואז "Run anyway". זו התראה רגילה עבור תוכנות שהורדתם מהאינטרנט.</p>
-                        </div>
-                    </div>
+            <!-- 1. Installation -->
+            <div class="accordion-item" id="install">
+                <div class="accordion-header" onclick="toggleAccordion(0)">
+                    <span class="accordion-step-num">1</span>
+                    <div class="accordion-header-icon"><i class="ti ti-settings"></i></div>
+                    <h2>
+                        <span class="lang-he-inline">התקנה על המחשב</span>
+                        <span class="lang-en-inline">Installation</span>
+                    </h2>
+                    <div class="accordion-chevron"><i class="ti ti-chevron-down"></i></div>
                 </div>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <div class="lang-he">
+                            <p>לא צריך ניסיון טכני! עקבו אחרי השלבים הבאים:</p>
 
-                <div class="lang-en">
-                    <p>No technical experience needed! Follow these simple steps:</p>
+                            <div class="step-card">
+                                <h4><span class="step-number">1</span>התקנת Python</h4>
+                                <p>Python היא תוכנה חינמית שהמחשב צריך כדי להריץ את הכלי. התקנה פשוטה:</p>
+                                <ul>
+                                    <li>פתחו את <strong>Microsoft Store</strong> (לחצו על כפתור Start וחפשו "Microsoft Store")</li>
+                                    <li>חפשו <strong>"Python 3.11"</strong></li>
+                                    <li>לחצו על <strong>"Get"</strong> (קבל) — זה חינמי</li>
+                                    <li>חכו שההתקנה תסתיים</li>
+                                </ul>
+                                <div class="callout callout-tip">
+                                    <span class="callout-icon"><i class="ti ti-bulb"></i></span>
+                                    <p>אם כבר יש לכם Python 3.10 ומעלה, אפשר לדלג על שלב זה.</p>
+                                </div>
+                            </div>
 
-                    <div class="step-card">
-                        <h4><span class="step-number">1</span>Install Python</h4>
-                        <p>Python is a free program your computer needs to run this tool:</p>
-                        <ul>
-                            <li>Open the <strong>Microsoft Store</strong> (click Start and search for "Microsoft Store")</li>
-                            <li>Search for <strong>"Python 3.11"</strong></li>
-                            <li>Click <strong>"Get"</strong> — it's free</li>
-                            <li>Wait for the installation to finish</li>
-                        </ul>
-                        <div class="callout callout-tip">
-                            <span class="callout-icon">💡</span>
-                            <p>If you already have Python 3.10 or newer, you can skip this step.</p>
+                            <div class="step-card">
+                                <h4><span class="step-number">2</span>התקנת FFmpeg</h4>
+                                <p>FFmpeg היא תוכנה חינמית שמאפשרת לעבד קבצי אודיו ווידאו. הדרך הכי קלה:</p>
+                                <ul>
+                                    <li>לחצו על מקש <strong>Windows</strong> במקלדת</li>
+                                    <li>הקלידו <strong>cmd</strong> ולחצו Enter</li>
+                                    <li>בחלון השחור שנפתח, הקלידו את הפקודה הבאה ולחצו Enter:</li>
+                                </ul>
+                                <div class="code-block">
+                                    <code><span class="command">winget install Gyan.FFmpeg</span></code>
+                                </div>
+                                <div class="callout callout-tip">
+                                    <span class="callout-icon"><i class="ti ti-bulb"></i></span>
+                                    <p>אם הפקודה לא עובדת, אפשר להוריד FFmpeg ידנית מ-<a href="https://www.gyan.dev/ffmpeg/builds/" target="_blank">gyan.dev</a>, לחלץ את הקבצים ולשים את <code>ffmpeg.exe</code> באותה תיקייה עם התוכנה.</p>
+                                </div>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">3</span>הורדת DROP THE MIKE</h4>
+                                <p>הורידו את הכלי מ-GitHub:</p>
+                                <ul>
+                                    <li>היכנסו לדף: <a href="https://github.com/dartaryan/drop-the-mike" target="_blank">github.com/dartaryan/drop-the-mike</a></li>
+                                    <li>לחצו על הכפתור הירוק <strong>"&lt;&gt; Code"</strong></li>
+                                    <li>בחרו <strong>"Download ZIP"</strong></li>
+                                    <li>חלצו את הקובץ לתיקייה במחשב (למשל: שולחן העבודה)</li>
+                                </ul>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">4</span>הפעלת התוכנה</h4>
+                                <p>פתחו את התיקייה שחילצתם ולחצו פעמיים על <strong>drop_the_mike.bat</strong></p>
+                                <p>בהפעלה הראשונה, התוכנה תתקין אוטומטית את כל מה שהיא צריכה. פשוט חכו שהחלון ייפתח.</p>
+                                <div class="callout callout-warning">
+                                    <span class="callout-icon"><i class="ti ti-alert-triangle"></i></span>
+                                    <p><strong>שימו לב:</strong> אם Windows שואל "Windows protected your PC" — לחצו על "More info" ואז "Run anyway". זו התראה רגילה עבור תוכנות שהורדתם מהאינטרנט.</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="step-card">
-                        <h4><span class="step-number">2</span>Install FFmpeg</h4>
-                        <p>FFmpeg is free software for processing audio and video files. The easiest way:</p>
-                        <ul>
-                            <li>Press the <strong>Windows</strong> key on your keyboard</li>
-                            <li>Type <strong>cmd</strong> and press Enter</li>
-                            <li>In the black window, type the following command and press Enter:</li>
-                        </ul>
-                        <div class="code-block">
-                            <code><span class="command">winget install Gyan.FFmpeg</span></code>
-                        </div>
-                        <div class="callout callout-tip">
-                            <span class="callout-icon">💡</span>
-                            <p>If the command doesn't work, you can download FFmpeg manually from <a href="https://www.gyan.dev/ffmpeg/builds/" target="_blank">gyan.dev</a>, extract the files, and place <code>ffmpeg.exe</code> in the same folder as the program.</p>
-                        </div>
-                    </div>
+                        <div class="lang-en">
+                            <p>No technical experience needed! Follow these simple steps:</p>
 
-                    <div class="step-card">
-                        <h4><span class="step-number">3</span>Download DROP THE MIKE</h4>
-                        <p>Download the tool from GitHub:</p>
-                        <ul>
-                            <li>Go to: <a href="https://github.com/dartaryan/drop-the-mike" target="_blank">github.com/dartaryan/drop-the-mike</a></li>
-                            <li>Click the green <strong>"&lt;&gt; Code"</strong> button</li>
-                            <li>Select <strong>"Download ZIP"</strong></li>
-                            <li>Extract the ZIP file to a folder on your computer (e.g., Desktop)</li>
-                        </ul>
-                    </div>
+                            <div class="step-card">
+                                <h4><span class="step-number">1</span>Install Python</h4>
+                                <p>Python is a free program your computer needs to run this tool:</p>
+                                <ul>
+                                    <li>Open the <strong>Microsoft Store</strong> (click Start and search for "Microsoft Store")</li>
+                                    <li>Search for <strong>"Python 3.11"</strong></li>
+                                    <li>Click <strong>"Get"</strong> — it's free</li>
+                                    <li>Wait for the installation to finish</li>
+                                </ul>
+                                <div class="callout callout-tip">
+                                    <span class="callout-icon"><i class="ti ti-bulb"></i></span>
+                                    <p>If you already have Python 3.10 or newer, you can skip this step.</p>
+                                </div>
+                            </div>
 
-                    <div class="step-card">
-                        <h4><span class="step-number">4</span>Run the Program</h4>
-                        <p>Open the extracted folder and double-click <strong>drop_the_mike.bat</strong></p>
-                        <p>On first run, the program will automatically install everything it needs. Just wait for the window to open.</p>
-                        <div class="callout callout-warning">
-                            <span class="callout-icon">⚠️</span>
-                            <p><strong>Note:</strong> If Windows shows "Windows protected your PC" — click "More info" then "Run anyway". This is a normal warning for software downloaded from the internet.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                            <div class="step-card">
+                                <h4><span class="step-number">2</span>Install FFmpeg</h4>
+                                <p>FFmpeg is free software for processing audio and video files. The easiest way:</p>
+                                <ul>
+                                    <li>Press the <strong>Windows</strong> key on your keyboard</li>
+                                    <li>Type <strong>cmd</strong> and press Enter</li>
+                                    <li>In the black window, type the following command and press Enter:</li>
+                                </ul>
+                                <div class="code-block">
+                                    <code><span class="command">winget install Gyan.FFmpeg</span></code>
+                                </div>
+                                <div class="callout callout-tip">
+                                    <span class="callout-icon"><i class="ti ti-bulb"></i></span>
+                                    <p>If the command doesn't work, you can download FFmpeg manually from <a href="https://www.gyan.dev/ffmpeg/builds/" target="_blank">gyan.dev</a>, extract the files, and place <code>ffmpeg.exe</code> in the same folder as the program.</p>
+                                </div>
+                            </div>
 
-        <!-- Section 3: Splitting Audio -->
-        <div class="card" id="split">
-            <div class="card-header">
-                <div class="card-header-icon">✂️</div>
-                <h2>
-                    <span class="lang-he-inline">פיצול קבצי אודיו</span>
-                    <span class="lang-en-inline">Splitting Audio Files</span>
-                </h2>
-            </div>
-            <div class="card-body">
-                <div class="lang-he">
-                    <p>ברגע שהתוכנה פתוחה:</p>
-                    <div class="step-card">
-                        <h4><span class="step-number">1</span>בחרו קובץ</h4>
-                        <p>לחצו על <strong>"בחר קובץ"</strong> ובחרו את קובץ האודיו או הווידאו שלכם (MP3, WAV, M4A, MP4, AVI, MKV ועוד).</p>
-                    </div>
-                    <div class="step-card">
-                        <h4><span class="step-number">2</span>בחרו מספר חלקים</h4>
-                        <p>בחרו לכמה חלקים לפצל את הקובץ (2-10+). ככל שהחלקים קטנים יותר, Gemini מתמלל טוב יותר.</p>
-                    </div>
-                    <div class="step-card">
-                        <h4><span class="step-number">3</span>לחצו "פצל קובץ"</h4>
-                        <p>הקבצים יישמרו בתיקייה חדשה עם שם הקובץ. אם Gemini אומר שהקבצים ארוכים מדי — לחצו על <strong>"קבצים ארוכים מדי? פצל ליותר חלקים"</strong>.</p>
-                    </div>
-                    <div class="callout callout-tip">
-                        <span class="callout-icon">💡</span>
-                        <p><strong>טיפ:</strong> חשבון Gemini בתשלום תומך בקבצים ארוכים יותר. אם אתם משתמשים בחשבון חינמי, פצלו ליותר חלקים.</p>
-                    </div>
-                </div>
-                <div class="lang-en">
-                    <p>Once the program is open:</p>
-                    <div class="step-card">
-                        <h4><span class="step-number">1</span>Select a file</h4>
-                        <p>Click <strong>"Select File"</strong> and choose your audio or video file (MP3, WAV, M4A, MP4, AVI, MKV and more).</p>
-                    </div>
-                    <div class="step-card">
-                        <h4><span class="step-number">2</span>Choose number of parts</h4>
-                        <p>Choose how many parts to split into (2-10+). Smaller parts = better transcription quality in Gemini.</p>
-                    </div>
-                    <div class="step-card">
-                        <h4><span class="step-number">3</span>Click "Split File"</h4>
-                        <p>Files are saved in a new folder named after your file. If Gemini says files are too long — click <strong>"Files too long? Split into more parts"</strong>.</p>
-                    </div>
-                    <div class="callout callout-tip">
-                        <span class="callout-icon">💡</span>
-                        <p><strong>Tip:</strong> A paid Gemini account supports longer audio files. If using a free account, split into smaller parts.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+                            <div class="step-card">
+                                <h4><span class="step-number">3</span>Download DROP THE MIKE</h4>
+                                <p>Download the tool from GitHub:</p>
+                                <ul>
+                                    <li>Go to: <a href="https://github.com/dartaryan/drop-the-mike" target="_blank">github.com/dartaryan/drop-the-mike</a></li>
+                                    <li>Click the green <strong>"&lt;&gt; Code"</strong> button</li>
+                                    <li>Select <strong>"Download ZIP"</strong></li>
+                                    <li>Extract the ZIP file to a folder on your computer (e.g., Desktop)</li>
+                                </ul>
+                            </div>
 
-        <!-- Workflow Arrow -->
-        <div class="workflow-arrow">
-            <div class="lang-he">⬇️ עכשיו עוברים לעבוד עם מייק ב-Gemini ⬇️</div>
-            <div class="lang-en">⬇️ Now we move to working with Mike in Gemini ⬇️</div>
-        </div>
-
-        <!-- Stage 1: Transcription -->
-        <div class="card" id="stage1">
-            <div class="card-header">
-                <div class="card-header-icon">🎧</div>
-                <h2>
-                    <span class="lang-he-inline">שלב 1 — תמלול עם מייק</span>
-                    <span class="lang-en-inline">Stage 1 — Transcription with Mike</span>
-                </h2>
-            </div>
-            <div class="card-body">
-                <div class="lang-he">
-                    <div class="badge">שיחה ראשונה ב-Gemini</div>
-                    <p style="margin-top:1rem;">בשלב הזה מייק מאזין לקבצי ה-MP3 ומתמלל אותם לטקסט.</p>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">1</span>פתחו שיחה חדשה עם מייק</h4>
-                        <p>היכנסו ל-<a href="https://gemini.google.com/" target="_blank">Google Gemini</a> ופתחו שיחה חדשה עם סוכן מייק (Mike). אפשר להגיע אליו דרך הקישור בתוכנה.</p>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">2</span>העלו קובץ MP3 וביקשו תמלול</h4>
-                        <p>העלו את קובץ ה-MP3 הראשון לחלון השיחה ואמרו למייק: <strong>"תמלל בעברית"</strong>.</p>
-                        <p>מייק יאזין לקובץ ויפיק תמלול מלא ומדויק עם חלוקה לדוברים.</p>
-                    </div>
-
-                    <div class="screenshot">
-                        <img src="assets/upload-mp3.png" alt="העלאת קובץ MP3 למייק">
-                        <div class="screenshot-caption">העלאת קובץ MP3 לשיחה עם מייק — מייק נכנס למצב תמלול</div>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">3</span>שמרו את התמלול</h4>
-                        <p>כשמייק סיים לתמלל — <strong>העתיקו את כל התמלול</strong> ושמרו אותו בקובץ טקסט במחשב. תנו לקובץ שם לפי מספר החלק (למשל: <code>1.txt</code>, <code>2.txt</code> וכו').</p>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">4</span>המשיכו עם שאר הקבצים</h4>
-                        <p>באותו חלון שיחה, העלו את קובץ ה-MP3 הבא וביקשו תמלול. חזרו על התהליך לכל הקבצים.</p>
-                        <div class="callout callout-warning">
-                            <span class="callout-icon">⚠️</span>
-                            <p><strong>חשוב:</strong> אם שמתם לב לירידה באיכות התמלול (טעויות, החמצות) — פתחו <strong>חלון שיחה חדש</strong> עם מייק והמשיכו לתמלל שם. זה קורה כי לפעמים חלון השיחה "מתעייף" אחרי קבצים רבים.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lang-en">
-                    <div class="badge">First Gemini conversation</div>
-                    <p style="margin-top:1rem;">In this stage, Mike listens to your MP3 files and transcribes them to text.</p>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">1</span>Open a new chat with Mike</h4>
-                        <p>Go to <a href="https://gemini.google.com/" target="_blank">Google Gemini</a> and start a new conversation with the Mike agent. You can reach him through the link in the program.</p>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">2</span>Upload an MP3 file and request transcription</h4>
-                        <p>Upload your first MP3 file to the chat and tell Mike: <strong>"Transcribe in Hebrew"</strong> (or English, depending on the language).</p>
-                        <p>Mike will listen to the file and produce a full, accurate transcription with speaker identification.</p>
-                    </div>
-
-                    <div class="screenshot">
-                        <img src="assets/upload-mp3.png" alt="Uploading MP3 file to Mike">
-                        <div class="screenshot-caption">Uploading an MP3 file to Mike — Mike enters transcription mode</div>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">3</span>Save the transcription</h4>
-                        <p>When Mike finishes — <strong>copy the entire transcription</strong> and save it as a text file on your computer. Name the file by part number (e.g., <code>1.txt</code>, <code>2.txt</code>, etc.).</p>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">4</span>Continue with remaining files</h4>
-                        <p>In the same chat window, upload the next MP3 file and request transcription. Repeat for all files.</p>
-                        <div class="callout callout-warning">
-                            <span class="callout-icon">⚠️</span>
-                            <p><strong>Important:</strong> If you notice transcription quality dropping (errors, missed words) — open a <strong>new chat window</strong> with Mike and continue transcribing there. This happens because the chat window can get "tired" after many files.</p>
+                            <div class="step-card">
+                                <h4><span class="step-number">4</span>Run the Program</h4>
+                                <p>Open the extracted folder and double-click <strong>drop_the_mike.bat</strong></p>
+                                <p>On first run, the program will automatically install everything it needs. Just wait for the window to open.</p>
+                                <div class="callout callout-warning">
+                                    <span class="callout-icon"><i class="ti ti-alert-triangle"></i></span>
+                                    <p><strong>Note:</strong> If Windows shows "Windows protected your PC" — click "More info" then "Run anyway". This is a normal warning for software downloaded from the internet.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="workflow-arrow">⬇️</div>
-
-        <!-- Stage 2: Processing -->
-        <div class="card" id="stage2">
-            <div class="card-header">
-                <div class="card-header-icon">🧠</div>
-                <h2>
-                    <span class="lang-he-inline">שלב 2 — עיבוד התמלול</span>
-                    <span class="lang-en-inline">Stage 2 — Processing the Transcript</span>
-                </h2>
-            </div>
-            <div class="card-body">
-                <div class="lang-he">
-                    <div class="badge">שיחה שנייה ב-Gemini</div>
-                    <p style="margin-top:1rem;">בשלב הזה מייק מנתח את כל התמלול ומכין תכנית עבודה.</p>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">1</span>פתחו שיחה חדשה עם מייק</h4>
-                        <p><strong>חשוב:</strong> פתחו <strong>חלון שיחה חדש</strong> (לא אותו חלון של התמלול!).</p>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">2</span>העלו את כל קבצי התמלול</h4>
-                        <p>העלו את <strong>כל קבצי הטקסט</strong> שיצרתם בשלב הקודם (1.txt, 2.txt, 3.txt וכו') לתוך חלון השיחה ביחד.</p>
-                    </div>
-
-                    <div class="screenshot">
-                        <img src="assets/upload-transcript.png" alt="העלאת קבצי תמלול למייק">
-                        <div class="screenshot-caption">העלאת כל קבצי התמלול לשיחה חדשה — מייק נכנס למצב עיבוד</div>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">3</span>מייק ינתח וישאל שאלות</h4>
-                        <p>מייק יזהה אוטומטית שהוא עכשיו במצב <strong>עיבוד תמלול</strong>. הוא:</p>
-                        <ul>
-                            <li>יזהה את הדוברים ויבקש אישור</li>
-                            <li>ימפה את הנושאים שנדונו בשיחה</li>
-                            <li>ישאל שאלות הבהרה לגבי מה אתם צריכים מהתמלול</li>
-                            <li>יציע מבנה למסמך הסופי</li>
-                        </ul>
-                        <p>ענו על השאלות שלו — זה עוזר לו להכין מסמך מדויק יותר.</p>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">4</span>קבלו את קובץ ה-ID</h4>
-                        <p>בסוף השלב, מייק ייצור <strong>קובץ ID</strong> — "תעודת זהות" של התמלול. הקובץ הזה מכיל את כל המידע שמייק צריך כדי להפיק את המסמך הסופי: מי הדוברים, מה הנושאים, ומה המבנה שאישרתם.</p>
-                        <p><strong>הורידו את קובץ ה-ID ושמרו אותו במחשב.</strong></p>
-                    </div>
+            <!-- 2. Splitting Audio -->
+            <div class="accordion-item" id="split">
+                <div class="accordion-header" onclick="toggleAccordion(1)">
+                    <span class="accordion-step-num">2</span>
+                    <div class="accordion-header-icon"><i class="ti ti-cut"></i></div>
+                    <h2>
+                        <span class="lang-he-inline">פיצול קבצי אודיו</span>
+                        <span class="lang-en-inline">Splitting Audio Files</span>
+                    </h2>
+                    <div class="accordion-chevron"><i class="ti ti-chevron-down"></i></div>
                 </div>
-
-                <div class="lang-en">
-                    <div class="badge">Second Gemini conversation</div>
-                    <p style="margin-top:1rem;">In this stage, Mike analyzes the entire transcript and prepares a work plan.</p>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">1</span>Open a new chat with Mike</h4>
-                        <p><strong>Important:</strong> Open a <strong>new chat window</strong> (not the same one used for transcription!).</p>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">2</span>Upload all transcription files</h4>
-                        <p>Upload <strong>all text files</strong> you created in the previous stage (1.txt, 2.txt, 3.txt, etc.) into the chat window together.</p>
-                    </div>
-
-                    <div class="screenshot">
-                        <img src="assets/upload-transcript.png" alt="Uploading transcript files to Mike">
-                        <div class="screenshot-caption">Uploading all transcript files to a new chat — Mike enters processing mode</div>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">3</span>Mike will analyze and ask questions</h4>
-                        <p>Mike will automatically detect he's in <strong>transcript processing mode</strong>. He will:</p>
-                        <ul>
-                            <li>Identify speakers and ask for confirmation</li>
-                            <li>Map the topics discussed in the conversation</li>
-                            <li>Ask clarifying questions about what you need from the transcript</li>
-                            <li>Suggest a structure for the final document</li>
-                        </ul>
-                        <p>Answer his questions — this helps him produce a more accurate document.</p>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">4</span>Receive the ID file</h4>
-                        <p>At the end of this stage, Mike creates an <strong>ID file</strong> — an "identity card" for the transcript. This file contains everything Mike needs to produce the final document: who the speakers are, what topics were covered, and the structure you approved.</p>
-                        <p><strong>Download the ID file and save it on your computer.</strong></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="workflow-arrow">⬇️</div>
-
-        <!-- Stage 3: Final Document -->
-        <div class="card" id="stage3">
-            <div class="card-header">
-                <div class="card-header-icon">📄</div>
-                <h2>
-                    <span class="lang-he-inline">שלב 3 — יצירת המסמך הסופי</span>
-                    <span class="lang-en-inline">Stage 3 — Generating the Final Document</span>
-                </h2>
-            </div>
-            <div class="card-body">
-                <div class="lang-he">
-                    <div class="badge">שיחה שלישית ב-Gemini</div>
-                    <p style="margin-top:1rem;">בשלב הזה מייק מייצר את המסמך המוגמר אוטומטית.</p>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">1</span>פתחו שיחה חדשה עם מייק</h4>
-                        <p>שוב — פתחו <strong>חלון שיחה חדש</strong> (שלישי!).</p>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">2</span>העלו את התמלול + קובץ ה-ID</h4>
-                        <p>העלו <strong>ביחד</strong> את כל קבצי התמלול (1.txt, 2.txt...) ואת <strong>קובץ ה-ID</strong> שקיבלתם בשלב הקודם.</p>
-                        <p>מייק יזהה את קובץ ה-ID אוטומטית וידע בדיוק מה לעשות.</p>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">3</span>קבלו את המסמך!</h4>
-                        <p>מייק ייצר את המסמך הסופי לפי המבנה שאישרתם — <strong>בלי שאלות, בלי עיכובים</strong>. פשוט מסמך מסודר ומקצועי.</p>
-                        <div class="callout callout-tip">
-                            <span class="callout-icon">💡</span>
-                            <p><strong>טיפ:</strong> אחרי שקיבלתם את המסמך, אפשר להדביק אותו ב-<a href="https://dartaryan.github.io/hebrew-markdown-export/" target="_blank">עורך Markdown עברי</a> — כלי חינמי ליצוא PDF מקצועי עם תמיכה מלאה בעברית.</p>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <div class="lang-he">
+                            <p>ברגע שהתוכנה פתוחה:</p>
+                            <div class="step-card">
+                                <h4><span class="step-number">1</span>בחרו קובץ</h4>
+                                <p>לחצו על <strong>"בחר קובץ"</strong> ובחרו את קובץ האודיו או הווידאו שלכם (MP3, WAV, M4A, MP4, AVI, MKV ועוד).</p>
+                            </div>
+                            <div class="step-card">
+                                <h4><span class="step-number">2</span>בחרו מספר חלקים</h4>
+                                <p>בחרו לכמה חלקים לפצל את הקובץ (2-10+). ככל שהחלקים קטנים יותר, Gemini מתמלל טוב יותר.</p>
+                            </div>
+                            <div class="step-card">
+                                <h4><span class="step-number">3</span>לחצו "פצל קובץ"</h4>
+                                <p>הקבצים יישמרו בתיקייה חדשה עם שם הקובץ. אם Gemini אומר שהקבצים ארוכים מדי — לחצו על <strong>"קבצים ארוכים מדי? פצל ליותר חלקים"</strong>.</p>
+                            </div>
+                            <div class="callout callout-tip">
+                                <span class="callout-icon"><i class="ti ti-bulb"></i></span>
+                                <p><strong>טיפ:</strong> חשבון Gemini בתשלום תומך בקבצים ארוכים יותר. אם אתם משתמשים בחשבון חינמי, פצלו ליותר חלקים.</p>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="lang-en">
-                    <div class="badge">Third Gemini conversation</div>
-                    <p style="margin-top:1rem;">In this stage, Mike generates the finished document automatically.</p>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">1</span>Open a new chat with Mike</h4>
-                        <p>Again — open a <strong>new chat window</strong> (third one!).</p>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">2</span>Upload transcripts + ID file</h4>
-                        <p>Upload <strong>together</strong> all transcript files (1.txt, 2.txt...) and the <strong>ID file</strong> you received in the previous stage.</p>
-                        <p>Mike will automatically detect the ID file and know exactly what to do.</p>
-                    </div>
-
-                    <div class="step-card">
-                        <h4><span class="step-number">3</span>Receive your document!</h4>
-                        <p>Mike will generate the final document according to the structure you approved — <strong>no questions, no delays</strong>. Just a clean, professional document.</p>
-                        <div class="callout callout-tip">
-                            <span class="callout-icon">💡</span>
-                            <p><strong>Tip:</strong> After receiving the document, you can paste it into the <a href="https://dartaryan.github.io/hebrew-markdown-export/" target="_blank">Hebrew Markdown Editor</a> — a free tool for professional PDF export with full Hebrew support.</p>
+                        <div class="lang-en">
+                            <p>Once the program is open:</p>
+                            <div class="step-card">
+                                <h4><span class="step-number">1</span>Select a file</h4>
+                                <p>Click <strong>"Select File"</strong> and choose your audio or video file (MP3, WAV, M4A, MP4, AVI, MKV and more).</p>
+                            </div>
+                            <div class="step-card">
+                                <h4><span class="step-number">2</span>Choose number of parts</h4>
+                                <p>Choose how many parts to split into (2-10+). Smaller parts = better transcription quality in Gemini.</p>
+                            </div>
+                            <div class="step-card">
+                                <h4><span class="step-number">3</span>Click "Split File"</h4>
+                                <p>Files are saved in a new folder named after your file. If Gemini says files are too long — click <strong>"Files too long? Split into more parts"</strong>.</p>
+                            </div>
+                            <div class="callout callout-tip">
+                                <span class="callout-icon"><i class="ti ti-bulb"></i></span>
+                                <p><strong>Tip:</strong> A paid Gemini account supports longer audio files. If using a free account, split into smaller parts.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Contact -->
-        <div class="card" id="contact">
-            <div class="card-header">
-                <div class="card-header-icon">📧</div>
-                <h2>
-                    <span class="lang-he-inline">יצירת קשר</span>
-                    <span class="lang-en-inline">Contact</span>
-                </h2>
-            </div>
-            <div class="card-body" style="text-align: center;">
-                <div class="lang-he">
-                    <p style="font-size: 1.1rem;">רוצים לקבל את <strong>קובץ ההוראות של מייק</strong> כדי לערוך אותו או להכניס אותו למודל AI אחר?</p>
-                    <p style="font-size: 1.1rem;">שלחו הודעה ל:</p>
-                    <p style="margin-top: 0.5rem;">
-                        <a href="mailto:dartaryan@gmail.com" class="download-btn" style="font-size: 1.1rem;">
-                            📧 dartaryan@gmail.com
-                        </a>
-                    </p>
-                    <p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.9rem;">
-                        נבנה עם ❤️ על ידי <a href="https://github.com/dartaryan" target="_blank">Ben Akiva</a>
-                    </p>
+            <!-- 3. Stage 1: Transcription -->
+            <div class="accordion-item" id="stage1">
+                <div class="accordion-header" onclick="toggleAccordion(2)">
+                    <span class="accordion-step-num">3</span>
+                    <div class="accordion-header-icon"><i class="ti ti-headphones"></i></div>
+                    <h2>
+                        <span class="lang-he-inline">שלב 1 — תמלול עם מייק</span>
+                        <span class="lang-en-inline">Stage 1 — Transcription with Mike</span>
+                    </h2>
+                    <div class="accordion-chevron"><i class="ti ti-chevron-down"></i></div>
                 </div>
-                <div class="lang-en">
-                    <p style="font-size: 1.1rem;">Want to get <strong>Mike's instruction file</strong> to edit it or use it with a different AI model?</p>
-                    <p style="font-size: 1.1rem;">Send a message to:</p>
-                    <p style="margin-top: 0.5rem;">
-                        <a href="mailto:dartaryan@gmail.com" class="download-btn" style="font-size: 1.1rem;">
-                            📧 dartaryan@gmail.com
-                        </a>
-                    </p>
-                    <p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.9rem;">
-                        Made with ❤️ by <a href="https://github.com/dartaryan" target="_blank">Ben Akiva</a>
-                    </p>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <div class="lang-he">
+                            <div class="badge">שיחה ראשונה ב-Gemini</div>
+                            <p style="margin-top:1rem;">בשלב הזה מייק מאזין לקבצי ה-MP3 ומתמלל אותם לטקסט.</p>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">1</span>פתחו שיחה חדשה עם מייק</h4>
+                                <p>היכנסו לסוכן מייק ופתחו שיחה חדשה:</p>
+                                <a href="https://gemini.google.com/gem/124_L6lakUi2fZtfW7ETr38BB-RY2y3t8?usp=sharing" target="_blank" class="mike-link">
+                                    <i class="ti ti-microphone-2"></i> פתחו שיחה עם מייק
+                                </a>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">2</span>העלו קובץ MP3 וביקשו תמלול</h4>
+                                <p>העלו את קובץ ה-MP3 הראשון לחלון השיחה ואמרו למייק: <strong>"תמלל בעברית"</strong>.</p>
+                                <p>מייק יאזין לקובץ ויפיק תמלול מלא ומדויק עם חלוקה לדוברים.</p>
+                            </div>
+
+                            <div class="screenshot">
+                                <img src="assets/upload-mp3.png" alt="העלאת קובץ MP3 למייק">
+                                <div class="screenshot-caption">העלאת קובץ MP3 לשיחה עם מייק — מייק נכנס למצב תמלול</div>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">3</span>שמרו את התמלול</h4>
+                                <p>כשמייק סיים לתמלל — <strong>העתיקו את כל התמלול</strong> ושמרו אותו בקובץ טקסט במחשב. תנו לקובץ שם לפי מספר החלק (למשל: <code>1.txt</code>, <code>2.txt</code> וכו').</p>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">4</span>המשיכו עם שאר הקבצים</h4>
+                                <p>באותו חלון שיחה, העלו את קובץ ה-MP3 הבא וביקשו תמלול. חזרו על התהליך לכל הקבצים.</p>
+                                <div class="callout callout-warning">
+                                    <span class="callout-icon"><i class="ti ti-alert-triangle"></i></span>
+                                    <p><strong>חשוב:</strong> אם שמתם לב לירידה באיכות התמלול (טעויות, החמצות) — פתחו <strong>חלון שיחה חדש</strong> עם מייק והמשיכו לתמלל שם. זה קורה כי לפעמים חלון השיחה "מתעייף" אחרי קבצים רבים.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lang-en">
+                            <div class="badge">First Gemini conversation</div>
+                            <p style="margin-top:1rem;">In this stage, Mike listens to your MP3 files and transcribes them to text.</p>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">1</span>Open a new chat with Mike</h4>
+                                <p>Go to the Mike agent and start a new conversation:</p>
+                                <a href="https://gemini.google.com/gem/124_L6lakUi2fZtfW7ETr38BB-RY2y3t8?usp=sharing" target="_blank" class="mike-link">
+                                    <i class="ti ti-microphone-2"></i> Open a chat with Mike
+                                </a>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">2</span>Upload an MP3 file and request transcription</h4>
+                                <p>Upload your first MP3 file to the chat and tell Mike: <strong>"Transcribe in Hebrew"</strong> (or English, depending on the language).</p>
+                                <p>Mike will listen to the file and produce a full, accurate transcription with speaker identification.</p>
+                            </div>
+
+                            <div class="screenshot">
+                                <img src="assets/upload-mp3.png" alt="Uploading MP3 file to Mike">
+                                <div class="screenshot-caption">Uploading an MP3 file to Mike — Mike enters transcription mode</div>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">3</span>Save the transcription</h4>
+                                <p>When Mike finishes — <strong>copy the entire transcription</strong> and save it as a text file on your computer. Name the file by part number (e.g., <code>1.txt</code>, <code>2.txt</code>, etc.).</p>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">4</span>Continue with remaining files</h4>
+                                <p>In the same chat window, upload the next MP3 file and request transcription. Repeat for all files.</p>
+                                <div class="callout callout-warning">
+                                    <span class="callout-icon"><i class="ti ti-alert-triangle"></i></span>
+                                    <p><strong>Important:</strong> If you notice transcription quality dropping (errors, missed words) — open a <strong>new chat window</strong> with Mike and continue transcribing there. This happens because the chat window can get "tired" after many files.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <!-- 4. Stage 2: Processing -->
+            <div class="accordion-item" id="stage2">
+                <div class="accordion-header" onclick="toggleAccordion(3)">
+                    <span class="accordion-step-num">4</span>
+                    <div class="accordion-header-icon"><i class="ti ti-brain"></i></div>
+                    <h2>
+                        <span class="lang-he-inline">שלב 2 — עיבוד התמלול</span>
+                        <span class="lang-en-inline">Stage 2 — Processing the Transcript</span>
+                    </h2>
+                    <div class="accordion-chevron"><i class="ti ti-chevron-down"></i></div>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <div class="lang-he">
+                            <div class="badge">שיחה שנייה ב-Gemini</div>
+                            <p style="margin-top:1rem;">בשלב הזה מייק מנתח את כל התמלול ומכין תכנית עבודה.</p>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">1</span>פתחו שיחה חדשה עם מייק</h4>
+                                <p><strong>חשוב:</strong> פתחו <strong>חלון שיחה חדש</strong> (לא אותו חלון של התמלול!).</p>
+                                <a href="https://gemini.google.com/gem/124_L6lakUi2fZtfW7ETr38BB-RY2y3t8?usp=sharing" target="_blank" class="mike-link">
+                                    <i class="ti ti-microphone-2"></i> פתחו שיחה חדשה עם מייק
+                                </a>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">2</span>העלו את כל קבצי התמלול</h4>
+                                <p>העלו את <strong>כל קבצי הטקסט</strong> שיצרתם בשלב הקודם (1.txt, 2.txt, 3.txt וכו') לתוך חלון השיחה ביחד.</p>
+                            </div>
+
+                            <div class="screenshot">
+                                <img src="assets/upload-transcript.png" alt="העלאת קבצי תמלול למייק">
+                                <div class="screenshot-caption">העלאת כל קבצי התמלול לשיחה חדשה — מייק נכנס למצב עיבוד</div>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">3</span>מייק ינתח וישאל שאלות</h4>
+                                <p>מייק יזהה אוטומטית שהוא עכשיו במצב <strong>עיבוד תמלול</strong>. הוא:</p>
+                                <ul>
+                                    <li>יזהה את הדוברים ויבקש אישור</li>
+                                    <li>ימפה את הנושאים שנדונו בשיחה</li>
+                                    <li>ישאל שאלות הבהרה לגבי מה אתם צריכים מהתמלול</li>
+                                    <li>יציע מבנה למסמך הסופי</li>
+                                </ul>
+                                <p>ענו על השאלות שלו — זה עוזר לו להכין מסמך מדויק יותר.</p>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">4</span>קבלו את קובץ ה-ID</h4>
+                                <p>בסוף השלב, מייק ייצור <strong>קובץ ID</strong> — "תעודת זהות" של התמלול. הקובץ הזה מכיל את כל המידע שמייק צריך כדי להפיק את המסמך הסופי: מי הדוברים, מה הנושאים, ומה המבנה שאישרתם.</p>
+                                <p><strong>הורידו את קובץ ה-ID ושמרו אותו במחשב.</strong></p>
+                            </div>
+                        </div>
+
+                        <div class="lang-en">
+                            <div class="badge">Second Gemini conversation</div>
+                            <p style="margin-top:1rem;">In this stage, Mike analyzes the entire transcript and prepares a work plan.</p>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">1</span>Open a new chat with Mike</h4>
+                                <p><strong>Important:</strong> Open a <strong>new chat window</strong> (not the same one used for transcription!).</p>
+                                <a href="https://gemini.google.com/gem/124_L6lakUi2fZtfW7ETr38BB-RY2y3t8?usp=sharing" target="_blank" class="mike-link">
+                                    <i class="ti ti-microphone-2"></i> Open a new chat with Mike
+                                </a>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">2</span>Upload all transcription files</h4>
+                                <p>Upload <strong>all text files</strong> you created in the previous stage (1.txt, 2.txt, 3.txt, etc.) into the chat window together.</p>
+                            </div>
+
+                            <div class="screenshot">
+                                <img src="assets/upload-transcript.png" alt="Uploading transcript files to Mike">
+                                <div class="screenshot-caption">Uploading all transcript files to a new chat — Mike enters processing mode</div>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">3</span>Mike will analyze and ask questions</h4>
+                                <p>Mike will automatically detect he's in <strong>transcript processing mode</strong>. He will:</p>
+                                <ul>
+                                    <li>Identify speakers and ask for confirmation</li>
+                                    <li>Map the topics discussed in the conversation</li>
+                                    <li>Ask clarifying questions about what you need from the transcript</li>
+                                    <li>Suggest a structure for the final document</li>
+                                </ul>
+                                <p>Answer his questions — this helps him produce a more accurate document.</p>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">4</span>Receive the ID file</h4>
+                                <p>At the end of this stage, Mike creates an <strong>ID file</strong> — an "identity card" for the transcript. This file contains everything Mike needs to produce the final document: who the speakers are, what topics were covered, and the structure you approved.</p>
+                                <p><strong>Download the ID file and save it on your computer.</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Stage 3: Final Document -->
+            <div class="accordion-item" id="stage3">
+                <div class="accordion-header" onclick="toggleAccordion(4)">
+                    <span class="accordion-step-num">5</span>
+                    <div class="accordion-header-icon"><i class="ti ti-file-text"></i></div>
+                    <h2>
+                        <span class="lang-he-inline">שלב 3 — יצירת המסמך הסופי</span>
+                        <span class="lang-en-inline">Stage 3 — Generating the Final Document</span>
+                    </h2>
+                    <div class="accordion-chevron"><i class="ti ti-chevron-down"></i></div>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body">
+                        <div class="lang-he">
+                            <div class="badge">שיחה שלישית ב-Gemini</div>
+                            <p style="margin-top:1rem;">בשלב הזה מייק מייצר את המסמך המוגמר אוטומטית.</p>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">1</span>פתחו שיחה חדשה עם מייק</h4>
+                                <p>שוב — פתחו <strong>חלון שיחה חדש</strong> (שלישי!).</p>
+                                <a href="https://gemini.google.com/gem/124_L6lakUi2fZtfW7ETr38BB-RY2y3t8?usp=sharing" target="_blank" class="mike-link">
+                                    <i class="ti ti-microphone-2"></i> פתחו שיחה חדשה עם מייק
+                                </a>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">2</span>העלו את התמלול + קובץ ה-ID</h4>
+                                <p>העלו <strong>ביחד</strong> את כל קבצי התמלול (1.txt, 2.txt...) ואת <strong>קובץ ה-ID</strong> שקיבלתם בשלב הקודם.</p>
+                                <p>מייק יזהה את קובץ ה-ID אוטומטית וידע בדיוק מה לעשות.</p>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">3</span>קבלו את המסמך!</h4>
+                                <p>מייק ייצר את המסמך הסופי לפי המבנה שאישרתם — <strong>בלי שאלות, בלי עיכובים</strong>. פשוט מסמך מסודר ומקצועי.</p>
+                                <div class="callout callout-tip">
+                                    <span class="callout-icon"><i class="ti ti-bulb"></i></span>
+                                    <p><strong>טיפ:</strong> אחרי שקיבלתם את המסמך, אפשר להדביק אותו ב-<a href="https://dartaryan.github.io/hebrew-markdown-export/" target="_blank">עורך Markdown עברי</a> — כלי חינמי ליצוא PDF מקצועי עם תמיכה מלאה בעברית.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lang-en">
+                            <div class="badge">Third Gemini conversation</div>
+                            <p style="margin-top:1rem;">In this stage, Mike generates the finished document automatically.</p>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">1</span>Open a new chat with Mike</h4>
+                                <p>Again — open a <strong>new chat window</strong> (third one!).</p>
+                                <a href="https://gemini.google.com/gem/124_L6lakUi2fZtfW7ETr38BB-RY2y3t8?usp=sharing" target="_blank" class="mike-link">
+                                    <i class="ti ti-microphone-2"></i> Open a new chat with Mike
+                                </a>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">2</span>Upload transcripts + ID file</h4>
+                                <p>Upload <strong>together</strong> all transcript files (1.txt, 2.txt...) and the <strong>ID file</strong> you received in the previous stage.</p>
+                                <p>Mike will automatically detect the ID file and know exactly what to do.</p>
+                            </div>
+
+                            <div class="step-card">
+                                <h4><span class="step-number">3</span>Receive your document!</h4>
+                                <p>Mike will generate the final document according to the structure you approved — <strong>no questions, no delays</strong>. Just a clean, professional document.</p>
+                                <div class="callout callout-tip">
+                                    <span class="callout-icon"><i class="ti ti-bulb"></i></span>
+                                    <p><strong>Tip:</strong> After receiving the document, you can paste it into the <a href="https://dartaryan.github.io/hebrew-markdown-export/" target="_blank">Hebrew Markdown Editor</a> — a free tool for professional PDF export with full Hebrew support.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Contact -->
+            <div class="accordion-item" id="contact">
+                <div class="accordion-header" onclick="toggleAccordion(5)">
+                    <span class="accordion-step-num">6</span>
+                    <div class="accordion-header-icon"><i class="ti ti-mail"></i></div>
+                    <h2>
+                        <span class="lang-he-inline">יצירת קשר</span>
+                        <span class="lang-en-inline">Contact</span>
+                    </h2>
+                    <div class="accordion-chevron"><i class="ti ti-chevron-down"></i></div>
+                </div>
+                <div class="accordion-content">
+                    <div class="accordion-body" style="text-align: center;">
+                        <div class="lang-he">
+                            <p style="font-size: 1.1rem;">רוצים לקבל את <strong>קובץ ההוראות של מייק</strong> כדי לערוך אותו או להכניס אותו למודל AI אחר?</p>
+                            <p style="font-size: 1.1rem;">שלחו הודעה ל:</p>
+                            <p style="margin-top: 0.5rem;">
+                                <a href="mailto:dartaryan@gmail.com" class="download-btn" style="font-size: 1.1rem;">
+                                    <i class="ti ti-mail"></i> dartaryan@gmail.com
+                                </a>
+                            </p>
+                            <p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                                נבנה עם <span class="heart-icon"></span> על ידי <a href="https://github.com/dartaryan" target="_blank">בן עקיבא</a>
+                            </p>
+                        </div>
+                        <div class="lang-en">
+                            <p style="font-size: 1.1rem;">Want to get <strong>Mike's instruction file</strong> to edit it or use it with a different AI model?</p>
+                            <p style="font-size: 1.1rem;">Send a message to:</p>
+                            <p style="margin-top: 0.5rem;">
+                                <a href="mailto:dartaryan@gmail.com" class="download-btn" style="font-size: 1.1rem;">
+                                    <i class="ti ti-mail"></i> dartaryan@gmail.com
+                                </a>
+                            </p>
+                            <p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                                Made with <span class="heart-icon"></span> by <a href="https://github.com/dartaryan" target="_blank">Ben Akiva</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- end accordion -->
 
     </div>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-logo">
-            🎤 DROP THE MIKE
+            <i class="ti ti-microphone-2"></i> DROP THE MIKE
         </div>
         <div class="footer-text">
             <span class="lang-he-inline">פיצול אודיו, תמלול עם AI, ועיבוד מקצועי של שיחות.</span>
             <span class="lang-en-inline">Split audio, transcribe with AI, and professionally process conversations.</span>
         </div>
         <a href="https://github.com/dartaryan" target="_blank" class="footer-credit">
-            ⭐ Ben Akiva — GitHub
+            <i class="ti ti-star"></i>
+            <span class="lang-he-inline">בן עקיבא — GitHub</span>
+            <span class="lang-en-inline">Ben Akiva — GitHub</span>
         </a>
     </footer>
 
     <script>
+        // Accordion toggle — one at a time
+        function toggleAccordion(index) {
+            const items = document.querySelectorAll('.accordion-item');
+            items.forEach(function(item, i) {
+                if (i === index) {
+                    item.classList.toggle('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
         // Theme toggle
         function toggleTheme() {
             const html = document.documentElement;
             const current = html.getAttribute('data-theme');
             const next = current === 'dark' ? 'light' : 'dark';
             html.setAttribute('data-theme', next);
-            
+
             const label = document.getElementById('themeLabel');
             const icon = document.getElementById('themeIcon');
-            
+
             if (next === 'dark') {
                 label.textContent = 'Light';
-                icon.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+                icon.className = 'ti ti-sun';
             } else {
                 label.textContent = 'Dark';
-                icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+                icon.className = 'ti ti-moon';
             }
-            
+
             localStorage.setItem('theme', next);
         }
 
@@ -1288,7 +1457,7 @@
         function toggleLanguage() {
             const html = document.documentElement;
             const isRtl = html.getAttribute('dir') === 'rtl';
-            
+
             if (isRtl) {
                 html.setAttribute('dir', 'ltr');
                 html.setAttribute('lang', 'en');
@@ -1298,26 +1467,30 @@
                 html.setAttribute('lang', 'he');
                 document.getElementById('langLabel').textContent = 'English';
             }
-            
+
             localStorage.setItem('lang', html.getAttribute('lang'));
             localStorage.setItem('dir', html.getAttribute('dir'));
         }
 
         // Restore preferences
         (function() {
-            const savedTheme = localStorage.getItem('theme');
-            const savedLang = localStorage.getItem('lang');
-            const savedDir = localStorage.getItem('dir');
-            
+            var savedTheme = localStorage.getItem('theme');
+            var savedLang = localStorage.getItem('lang');
+            var savedDir = localStorage.getItem('dir');
+
             if (savedTheme) {
                 document.documentElement.setAttribute('data-theme', savedTheme);
-                const label = document.getElementById('themeLabel');
+                var label = document.getElementById('themeLabel');
+                var icon = document.getElementById('themeIcon');
                 if (savedTheme === 'light') {
                     label.textContent = 'Dark';
-                    document.getElementById('themeIcon').innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+                    icon.className = 'ti ti-moon';
+                } else {
+                    label.textContent = 'Light';
+                    icon.className = 'ti ti-sun';
                 }
             }
-            
+
             if (savedLang && savedDir) {
                 document.documentElement.setAttribute('lang', savedLang);
                 document.documentElement.setAttribute('dir', savedDir);
@@ -1326,17 +1499,6 @@
                 }
             }
         })();
-
-        // Smooth scroll for TOC links
-        document.querySelectorAll('.toc a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
     </script>
 
 </body>
