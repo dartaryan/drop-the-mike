@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# FFmpeg binaries (users must provide their own)
+ffmpeg.exe
+ffprobe.exe
+ffmpeg/
+
+# Media files
+*.mp3
+*.mp4
+*.wav
+*.m4a
+*.ogg
+*.flac
+*.avi
+*.mkv
+*.mov
+*.webm
+*.wmv
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Output folders
+*_split/
