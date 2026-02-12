@@ -14,6 +14,10 @@ icon.icns
 icon.iconset/
 *.dmg
 ffmpeg_temp/
+ffmpeg_download.zip
+
+# Local release packages (built by build_local.ps1)
+release/
 
 # FFmpeg binaries (users must provide their own)
 ffmpeg.exe

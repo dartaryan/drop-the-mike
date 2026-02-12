@@ -73,11 +73,21 @@ jobs:
         run: |
           iscc /DMyAppVersion=${{ steps.version.outputs.VERSION }} /DSourceDir=dist\DropTheMike installer.iss
 
+      - name: Create portable ZIP
+        shell: pwsh
+        run: Compress-Archive -Path "dist\DropTheMike\*" -DestinationPath "DropTheMike-Windows.zip"
+
       - name: Upload Windows installer artifact
         uses: actions/upload-artifact@v4
         with:
           name: windows-installer
           path: Output/DropTheMike-Setup.exe
+
+      - name: Upload Windows ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-zip
+          path: DropTheMike-Windows.zip
 
   # --------------------------------------------------------
   # macOS BUILD
@@ -164,11 +174,20 @@ jobs:
           # create-dmg returns non-zero if dmg already exists; the || true handles re-runs
           ls -la DropTheMike.dmg
 
+      - name: Create portable ZIP for macOS
+        run: cd dist && zip -r ../DropTheMike-Mac.zip DropTheMike.app
+
       - name: Upload macOS DMG artifact
         uses: actions/upload-artifact@v4
         with:
           name: macos-dmg
           path: DropTheMike.dmg
+
+      - name: Upload macOS ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-zip
+          path: DropTheMike-Mac.zip
 
   # --------------------------------------------------------
   # CREATE GITHUB RELEASE
@@ -185,10 +204,22 @@ jobs:
           name: windows-installer
           path: artifacts/
 
+      - name: Download Windows ZIP
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-zip
+          path: artifacts/
+
       - name: Download macOS DMG
         uses: actions/download-artifact@v4
         with:
           name: macos-dmg
+          path: artifacts/
+
+      - name: Download macOS ZIP
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-zip
           path: artifacts/
 
       - name: Extract version from tag
@@ -205,15 +236,23 @@ jobs:
             ## DROP THE MIKE v${{ steps.version.outputs.VERSION }}
 
             ### Downloads
-            - **Windows**: Download `DropTheMike-Setup.exe` and run the installer
-            - **macOS**: Download `DropTheMike.dmg`, open it, and drag the app to Applications
 
-            ### What's included
-            - DROP THE MIKE application
-            - FFmpeg (bundled — no separate installation needed)
-            - Desktop shortcut and Start Menu entry (Windows)
+            | Platform | Installer | Portable ZIP |
+            |----------|-----------|--------------|
+            | **Windows** | [DropTheMike-Setup.exe](https://github.com/dartaryan/drop-the-mike/releases/download/${{ github.ref_name }}/DropTheMike-Setup.exe) | [DropTheMike-Windows.zip](https://github.com/dartaryan/drop-the-mike/releases/download/${{ github.ref_name }}/DropTheMike-Windows.zip) |
+            | **macOS** | [DropTheMike.dmg](https://github.com/dartaryan/drop-the-mike/releases/download/${{ github.ref_name }}/DropTheMike.dmg) | [DropTheMike-Mac.zip](https://github.com/dartaryan/drop-the-mike/releases/download/${{ github.ref_name }}/DropTheMike-Mac.zip) |
+
+            ### Portable ZIP (for corporate networks)
+            If your organization blocks .exe/.dmg downloads, use the ZIP version:
+            1. Download the ZIP file
+            2. Extract to any folder
+            3. Run `DropTheMike.exe` (Windows) or `DropTheMike.app` (macOS)
+
+            No installation needed. Everything is included (app + FFmpeg).
           files: |
             artifacts/DropTheMike-Setup.exe
+            artifacts/DropTheMike-Windows.zip
             artifacts/DropTheMike.dmg
+            artifacts/DropTheMike-Mac.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
