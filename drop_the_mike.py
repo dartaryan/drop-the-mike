@@ -56,6 +56,10 @@ STRINGS = {
         "en": "4. Send the transcripts to Mike agent for analysis",
         "he": "4. שלח את התמלולים לסוכן מייק לניתוח"
     },
+    "skip_to_mike": {
+        "en": "Short recording? Skip straight to Mike \u2192",
+        "he": "\u2190 הקלטה קצרה? אפשר לגשת ישירות למייק"
+    },
 
     # Instructions - Phase 2 (after split)
     "post_split_title": {"en": "NEXT STEPS", "he": "מה עכשיו?"},
@@ -411,11 +415,12 @@ def split_audio(
         if is_video:
             cmd.extend(['-vn'])
 
+        input_ext = os.path.splitext(input_file)[1].lower()
         if bitrate > 0:
             cmd.extend(['-b:a', f'{bitrate}k'])
-        elif is_video:
-            # For video files we must re-encode audio to MP3
-            cmd.extend(['-b:a', '192k'])
+        elif is_video or input_ext != '.mp3':
+            fallback = f"{info['bitrate']}k" if info.get('bitrate') else '192k'
+            cmd.extend(['-b:a', fallback])
         else:
             cmd.extend(['-acodec', 'copy'])
 
@@ -785,6 +790,25 @@ class DropTheMikeApp(ctk.CTk):
             self._register_i18n(lbl, key)
             self._directional_labels.append(lbl)
             setattr(self, f"lbl_{key.split('_', 1)[1]}", lbl)
+
+        separator = ctk.CTkFrame(inner, fg_color=Colors.BORDER, height=1)
+        separator.pack(fill="x", pady=(12, 8))
+
+        self.btn_skip_to_mike = ctk.CTkButton(
+            inner,
+            text=t("skip_to_mike", self.lang),
+            font=(Fonts.FAMILY_SANS, 11, "bold"),
+            fg_color="transparent",
+            hover_color=Colors.BG_ELEVATED,
+            text_color=Colors.PRIMARY,
+            anchor=a,
+            corner_radius=8,
+            height=32,
+            command=lambda: webbrowser.open(MIKE_AGENT_URL)
+        )
+        self.btn_skip_to_mike.pack(anchor=a, fill="x")
+        self._register_i18n(self.btn_skip_to_mike, "skip_to_mike")
+        self._directional_labels.append(self.btn_skip_to_mike)
 
     # ------------------------------------------------------------------
     # FILE SELECTION
