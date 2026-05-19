@@ -20,7 +20,7 @@ from typing import Optional, List, Callable
 # ============================================================================
 # CONSTANTS
 # ============================================================================
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.2.0"
 GITHUB_OWNER = "dartaryan"
 GITHUB_REPO = "drop-the-mike"
 MIKE_AGENT_URL = "https://gemini.google.com/gem/124_L6lakUi2fZtfW7ETr38BB-RY2y3t8?usp=sharing"
@@ -91,6 +91,9 @@ STRINGS = {
 
     # Settings
     "settings": {"en": "SETTINGS", "he": "הגדרות"},
+    "mode_label": {"en": "Mode", "he": "מצב"},
+    "mode_split": {"en": "Split into parts", "he": "פיצול לחלקים"},
+    "mode_convert": {"en": "Convert to single file", "he": "המרה לקובץ אחד"},
     "num_parts": {"en": "Number of Parts", "he": "מספר חלקים"},
     "quality": {"en": "Output Quality", "he": "איכות פלט"},
     "output_folder": {"en": "Output Folder", "he": "תיקיית פלט"},
@@ -111,7 +114,9 @@ STRINGS = {
 
     # Actions
     "split_file": {"en": "SPLIT FILE", "he": "פצל קובץ"},
+    "convert_file": {"en": "CONVERT FILE", "he": "המר קובץ"},
     "processing": {"en": "Processing...", "he": "...מעבד"},
+    "processing_convert": {"en": "Converting...", "he": "...ממיר"},
     "clear": {"en": "Clear", "he": "נקה"},
     "open_folder": {"en": "Open Output Folder", "he": "פתח תיקיית פלט"},
 
@@ -135,6 +140,14 @@ STRINGS = {
     "split_success": {
         "en": "Successfully split into {n} parts!",
         "he": "!פוצל בהצלחה ל-{n} חלקים"
+    },
+    "convert_success": {
+        "en": "Successfully converted to {name}",
+        "he": "ההמרה הצליחה: {name}"
+    },
+    "preview_convert_hint": {
+        "en": "Will produce a single audio file:",
+        "he": ":ייווצר קובץ אודיו אחד"
     },
     "files_saved_to": {
         "en": "Files saved to:",
@@ -444,6 +457,61 @@ def split_audio(
     return output_files
 
 
+def convert_to_audio(
+    input_file: str,
+    output_dir: str,
+    bitrate: int,
+    progress_callback: Optional[Callable[[int, int, str], None]] = None
+) -> str:
+    """Convert audio/video file to a single MP3 (no splitting)"""
+    info = get_audio_info(input_file)
+    if 'error' in info:
+        raise Exception(f"Failed to read file: {info['error']}")
+
+    os.makedirs(output_dir, exist_ok=True)
+    base_name = os.path.splitext(os.path.basename(input_file))[0]
+    is_video = is_video_file(input_file)
+    output_file = os.path.join(output_dir, f"{base_name}_converted.mp3")
+
+    if progress_callback:
+        progress_callback(0, 1, "Converting...")
+
+    cmd = [
+        get_ffmpeg_path(),
+        '-i', input_file,
+    ]
+
+    if is_video:
+        cmd.extend(['-vn'])
+
+    input_ext = os.path.splitext(input_file)[1].lower()
+    if bitrate > 0:
+        cmd.extend(['-b:a', f'{bitrate}k'])
+    elif is_video or input_ext != '.mp3':
+        fallback = f"{info['bitrate']}k" if info.get('bitrate') else '192k'
+        cmd.extend(['-b:a', fallback])
+    else:
+        cmd.extend(['-acodec', 'copy'])
+
+    cmd.extend(['-y', output_file])
+
+    try:
+        creation_flags = subprocess.CREATE_NO_WINDOW if sys.platform == 'win32' else 0
+        subprocess.run(
+            cmd,
+            check=True,
+            capture_output=True,
+            creationflags=creation_flags
+        )
+    except subprocess.CalledProcessError as e:
+        raise Exception(f"FFmpeg error: {e.stderr.decode() if e.stderr else str(e)}")
+
+    if progress_callback:
+        progress_callback(1, 1, "Complete!")
+
+    return output_file
+
+
 # ============================================================================
 # CUSTOM WIDGETS
 # ============================================================================
@@ -513,6 +581,8 @@ class DropTheMikeApp(ctk.CTk):
         self._last_output_files: List[str] = []
         self._last_split_parts: int = 3
         self._split_done = False
+        # Output mode: "split" (multi-part) or "convert" (single file)
+        self.mode_var: Optional[ctk.StringVar] = None
 
         # Widget registry for i18n updates: list of (widget, string_key, config_key)
         self._i18n_registry: List[tuple] = []
@@ -649,6 +719,9 @@ class DropTheMikeApp(ctk.CTk):
 
         # Refresh instructions
         self._update_instructions()
+
+        # Refresh mode-dependent action button label
+        self._update_action_button_text()
 
     def _toggle_language(self):
         """Toggle between Hebrew and English"""
@@ -924,9 +997,58 @@ class DropTheMikeApp(ctk.CTk):
         settings_frame = ctk.CTkFrame(inner, fg_color="transparent")
         settings_frame.pack(fill="x", pady=(10, 0))
 
+        # --- Mode selector (Split vs Convert) ---
+        mode_frame = ctk.CTkFrame(settings_frame, fg_color="transparent")
+        mode_frame.pack(fill="x", pady=(0, 12))
+
+        self.lbl_mode = ctk.CTkLabel(
+            mode_frame,
+            text=t("mode_label", self.lang),
+            font=Fonts.BODY,
+            text_color=Colors.TEXT_PRIMARY,
+            anchor=a
+        )
+        self.lbl_mode.pack(anchor=a, fill="x")
+        self._register_i18n(self.lbl_mode, "mode_label")
+        self._directional_labels.append(self.lbl_mode)
+
+        self.mode_var = ctk.StringVar(value="split")
+
+        mode_radio_frame = ctk.CTkFrame(mode_frame, fg_color="transparent")
+        mode_radio_frame.pack(fill="x", pady=(5, 0))
+
+        self.rb_mode_split = ctk.CTkRadioButton(
+            mode_radio_frame,
+            text=t("mode_split", self.lang),
+            variable=self.mode_var,
+            value="split",
+            command=self._on_mode_change,
+            fg_color=Colors.PRIMARY,
+            hover_color=Colors.PRIMARY_HOVER,
+            text_color=Colors.TEXT_PRIMARY,
+            font=Fonts.BODY
+        )
+        self.rb_mode_split.pack(anchor=a, pady=(0, 4))
+        self._register_i18n(self.rb_mode_split, "mode_split")
+
+        self.rb_mode_convert = ctk.CTkRadioButton(
+            mode_radio_frame,
+            text=t("mode_convert", self.lang),
+            variable=self.mode_var,
+            value="convert",
+            command=self._on_mode_change,
+            fg_color=Colors.PRIMARY,
+            hover_color=Colors.PRIMARY_HOVER,
+            text_color=Colors.TEXT_PRIMARY,
+            font=Fonts.BODY
+        )
+        self.rb_mode_convert.pack(anchor=a)
+        self._register_i18n(self.rb_mode_convert, "mode_convert")
+
         # --- Number of parts ---
         parts_frame = ctk.CTkFrame(settings_frame, fg_color="transparent")
         parts_frame.pack(fill="x", pady=(0, 12))
+        self.parts_frame = parts_frame
 
         parts_label_frame = ctk.CTkFrame(parts_frame, fg_color="transparent")
         parts_label_frame.pack(fill="x")
@@ -966,6 +1088,7 @@ class DropTheMikeApp(ctk.CTk):
         # --- Quality ---
         quality_frame = ctk.CTkFrame(settings_frame, fg_color="transparent")
         quality_frame.pack(fill="x", pady=(0, 12))
+        self.quality_frame = quality_frame
 
         self.lbl_quality = ctk.CTkLabel(
             quality_frame,
@@ -1094,7 +1217,7 @@ class DropTheMikeApp(ctk.CTk):
             corner_radius=25
         )
         self.split_btn.pack(fill="x")
-        self._register_i18n(self.split_btn, "split_file")
+        # Note: split_btn label is mode-dependent — managed by _update_action_button_text()
 
         # Secondary actions row
         secondary_frame = ctk.CTkFrame(actions_frame, fg_color="transparent")
@@ -1372,14 +1495,59 @@ class DropTheMikeApp(ctk.CTk):
         self.parts_value_label.configure(text=str(parts))
         self._update_preview()
 
+    def _is_convert_mode(self) -> bool:
+        return self.mode_var is not None and self.mode_var.get() == "convert"
+
+    def _action_button_key(self) -> str:
+        return "convert_file" if self._is_convert_mode() else "split_file"
+
+    def _processing_key(self) -> str:
+        return "processing_convert" if self._is_convert_mode() else "processing"
+
+    def _update_action_button_text(self):
+        """Refresh the main action button label based on mode + language"""
+        if hasattr(self, "split_btn"):
+            self.split_btn.configure(text=t(self._action_button_key(), self.lang))
+
+    def _on_mode_change(self):
+        """Handle mode toggle (split vs convert)"""
+        if self._is_convert_mode():
+            self.parts_frame.pack_forget()
+            # Hide post-split section if it's still showing from a previous run
+            if hasattr(self, "post_split_frame"):
+                self.post_split_frame.pack_forget()
+        else:
+            # Re-pack parts_frame above quality frame; pack order may put it last,
+            # so it goes just before the quality_frame which is already packed.
+            # Using before= keeps the original visual order.
+            try:
+                self.parts_frame.pack(fill="x", pady=(0, 12), before=self.quality_frame)
+            except Exception:
+                self.parts_frame.pack(fill="x", pady=(0, 12))
+            # Restore post-split UI only if a split actually happened
+            if self._split_done and hasattr(self, "post_split_frame"):
+                self.post_split_frame.pack(fill="x", pady=(5, 0))
+        self._update_action_button_text()
+        self._update_preview()
+
     def _update_preview(self):
         """Update output preview"""
         if not self.selected_file:
             self.preview_content.configure(text=t("preview_hint", self.lang))
             return
 
-        num_parts = int(self.parts_slider.get())
         base_name = os.path.splitext(os.path.basename(self.selected_file))[0]
+
+        if self._is_convert_mode():
+            duration_str = self.file_info.get('duration_str', '??:??')
+            preview_lines = [
+                t("preview_convert_hint", self.lang),
+                f"    🎵 {base_name}_converted.mp3  ({duration_str})",
+            ]
+            self.preview_content.configure(text="\n".join(preview_lines))
+            return
+
+        num_parts = int(self.parts_slider.get())
 
         if 'duration' in self.file_info:
             part_duration = self.file_info['duration'] / num_parts
@@ -1412,12 +1580,12 @@ class DropTheMikeApp(ctk.CTk):
         return 0  # Original
 
     def _start_split(self):
-        """Start the split operation"""
+        """Start the split or convert operation"""
         if not self.selected_file or self.is_processing:
             return
 
         self.is_processing = True
-        self.split_btn.configure(state="disabled", text=t("processing", self.lang))
+        self.split_btn.configure(state="disabled", text=t(self._processing_key(), self.lang))
         self.progress_frame.pack(fill="x")
         self.progress_bar.set(0)
         self.progress_label.configure(text="")
@@ -1426,20 +1594,31 @@ class DropTheMikeApp(ctk.CTk):
         thread.start()
 
     def _do_split(self):
-        """Perform the split operation in a background thread"""
+        """Perform the split or convert operation in a background thread"""
         try:
-            num_parts = int(self.parts_slider.get())
-            self._last_split_parts = num_parts
             bitrate = self._get_bitrate()
             base_dir = self.output_dir or os.path.dirname(self.selected_file)
+
+            def progress_callback(current, total, message):
+                progress = current / total if total else 0
+                self.after(0, lambda: self._update_progress(progress, message))
+
+            if self._is_convert_mode():
+                output_file = convert_to_audio(
+                    self.selected_file,
+                    base_dir,
+                    bitrate,
+                    progress_callback
+                )
+                self.after(0, lambda: self._convert_complete(output_file, base_dir))
+                return
+
+            num_parts = int(self.parts_slider.get())
+            self._last_split_parts = num_parts
 
             # Create a dedicated subfolder
             base_name = os.path.splitext(os.path.basename(self.selected_file))[0]
             output_dir = os.path.join(base_dir, f"{base_name}_split")
-
-            def progress_callback(current, total, message):
-                progress = current / total
-                self.after(0, lambda: self._update_progress(progress, message))
 
             output_files = split_audio(
                 self.selected_file,
@@ -1462,7 +1641,7 @@ class DropTheMikeApp(ctk.CTk):
     def _split_complete(self, output_files: List[str], output_dir: str):
         """Handle split completion"""
         self.is_processing = False
-        self.split_btn.configure(state="normal", text=t("split_file", self.lang))
+        self.split_btn.configure(state="normal", text=t(self._action_button_key(), self.lang))
         self.progress_bar.set(1)
         self.progress_label.configure(
             text=f"{t('complete', self.lang)} {len(output_files)} files created."
@@ -1482,10 +1661,27 @@ class DropTheMikeApp(ctk.CTk):
             f"{t('files_saved_to', self.lang)}\n{output_dir}"
         )
 
+    def _convert_complete(self, output_file: str, output_dir: str):
+        """Handle convert (single-file) completion"""
+        self.is_processing = False
+        self.split_btn.configure(state="normal", text=t(self._action_button_key(), self.lang))
+        self.progress_bar.set(1)
+        self.progress_label.configure(text=t("complete", self.lang))
+
+        self._last_output_dir = output_dir
+        self._last_output_files = [output_file]
+        self.btn_open_folder.configure(state="normal")
+
+        messagebox.showinfo(
+            "DROP THE MIKE",
+            f"{t('convert_success', self.lang, name=os.path.basename(output_file))}\n\n"
+            f"{t('files_saved_to', self.lang)}\n{output_dir}"
+        )
+
     def _split_error(self, error_message: str):
         """Handle split error"""
         self.is_processing = False
-        self.split_btn.configure(state="normal", text=t("split_file", self.lang))
+        self.split_btn.configure(state="normal", text=t(self._action_button_key(), self.lang))
         self.progress_frame.pack_forget()
 
         messagebox.showerror(
